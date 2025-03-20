@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import os
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
@@ -75,7 +75,6 @@ if __name__ == '__main__':
 # 때문에 app.exec_( )를 통해 종료되지 않도록 루프를 설정합니다.
 # app이 종료되는 경우 0을 반환하여 종료하게됩니다.
 
-=======
 import os
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
@@ -151,4 +150,3 @@ if __name__ == '__main__':
 # 코드의 마지막에서 종료하게 됩니다.
 # 때문에 app.exec_( )를 통해 종료되지 않도록 루프를 설정합니다.
 # app이 종료되는 경우 0을 반환하여 종료하게됩니다.
->>>>>>> 9f9b1dc4faa81d715d1c4ba6d274e402d81f315b

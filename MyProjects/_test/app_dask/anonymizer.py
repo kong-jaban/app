@@ -1,3 +1,4 @@
+import dask.dataframe as dd
 def anonymize_data(df, drop_columns=None, bin_columns=None, bin_sizes=None):
     """
     컬럼 삭제 및 범주화 기능을 포함한 비식별 처리

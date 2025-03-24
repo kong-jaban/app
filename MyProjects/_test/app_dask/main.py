@@ -1,8 +1,11 @@
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QListWidget, QComboBox, QSpinBox
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QListWidget, QComboBox, QSpinBox, QLineEdit
 import sys
 from data_loader import load_csv
 from anonymizer import anonymize_data
 from visualizer import plot_distribution
+from project_manager import create_project, list_projects
+import matplotlib
+matplotlib.use("QtAgg")  # Qt 기반 백엔드 명확히 지정
 
 class DataAnonymizerApp(QWidget):
     def __init__(self):
@@ -11,6 +14,19 @@ class DataAnonymizerApp(QWidget):
     
     def initUI(self):
         layout = QVBoxLayout()
+        
+        self.projectInput = QLineEdit()
+        self.projectInput.setPlaceholderText("프로젝트 이름 입력")
+        layout.addWidget(self.projectInput)
+        
+        self.createProjectButton = QPushButton("프로젝트 생성")
+        self.createProjectButton.clicked.connect(self.createProject)
+        layout.addWidget(self.createProjectButton)
+        
+        self.projectList = QListWidget()
+        layout.addWidget(self.projectList)
+        self.loadProjects()
+        
         self.loadButton = QPushButton("CSV 파일 불러오기")
         self.loadButton.clicked.connect(self.loadFile)
         layout.addWidget(self.loadButton)
@@ -41,6 +57,16 @@ class DataAnonymizerApp(QWidget):
         self.setLayout(layout)
         self.setWindowTitle("Dask 기반 데이터 비식별화")
         self.resize(800, 600)
+    
+    def createProject(self):
+        project_name = self.projectInput.text().strip()
+        if project_name:
+            create_project(project_name)
+            self.loadProjects()
+    
+    def loadProjects(self):
+        self.projectList.clear()
+        self.projectList.addItems(list_projects())
     
     def loadFile(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "CSV 파일 선택", "", "CSV Files (*.csv)")

@@ -1,12 +1,6 @@
-import matplotlib.pyplot as plt
-
+import matplotlib as plt
+plt.use("Agg")  # GUI 없이 백엔드 설정
 def plot_distribution(df, column, title):
-    """
-    데이터의 분포를 시각화하는 함수
-    :param df: Dask DataFrame
-    :param column: 시각화할 컬럼명
-    :param title: 그래프 제목
-    """
     if column in df.columns:
         data = df[column].dropna().compute()
         plt.figure(figsize=(8, 5))

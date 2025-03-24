@@ -1,14 +1,16 @@
+# data_loader.py
 import dask.dataframe as dd
 
-def load_csv(file_path, sample_size=5):
-    """
-    대용량 CSV 파일을 Dask DataFrame으로 로드하고 일부 샘플을 출력
-    :param file_path: CSV 파일 경로
-    :param sample_size: 출력할 샘플 크기
-    :return: Dask DataFrame
-    """
-    print("CSV 파일 로드 중...")
+def load_csv(file_path):
     df = dd.read_csv(file_path, assume_missing=True)
-    print("데이터 샘플:")
-    print(df.head(sample_size))  # 일부 데이터 출력
+    return df
+
+# anonymizer.py
+def anonymize_data(df, drop_columns=None, bin_columns=None, bin_sizes=None):
+    if drop_columns:
+        df = df.drop(columns=drop_columns, errors='ignore')
+    if bin_columns and bin_sizes:
+        for col in bin_columns:
+            if col in df.columns:
+                df[col] = dd.cut(df[col], bins=bin_sizes.get(col, 5), labels=False)
     return df

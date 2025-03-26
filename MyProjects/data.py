@@ -41,6 +41,6 @@ customer_data = pd.DataFrame({
 
 # Save to CSV file
 file_path = "customer_data.csv"
-customer_data.to_csv(file_path, index=False)
+customer_data.to_csv(file_path, index=False, encoding='utf-8')
 
 print(f"CSV file created: {file_path}")

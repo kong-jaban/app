@@ -1,63 +1,114 @@
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QListWidget, QComboBox, QSpinBox, QLineEdit, QLabel
 import sys
-import pandas as pd
-from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QFileDialog, QLabel, QTableView
-from PySide6.QtCore import Qt, QAbstractTableModel
+import shutil
+import os
+from data_loader import load_csv, save_csv
+from anonymizer import anonymize_data
+from visualizer import plot_distribution
+from project_manager import create_project, list_projects, get_project_path
+import dask.dataframe as dd
 
-class DataFrameModel(QAbstractTableModel):
-    def __init__(self, df):
-        super().__init__()
-        self.df = df
-
-    def rowCount(self, parent=None):
-        return len(self.df)
-
-    def columnCount(self, parent=None):
-        return len(self.df.columns)
-
-    def data(self, index, role=Qt.DisplayRole):
-        if role == Qt.DisplayRole:
-            return str(self.df.iloc[index.row(), index.column()])
-        return None
-
-class App(QWidget):
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle('빅데이터 분석 및 비식별 처리 애플리케이션')
-
+        self.setWindowTitle("프로젝트 관리")
+        self.setGeometry(100, 100, 400, 300)
+        
         layout = QVBoxLayout()
+        
+        self.projectInput = QLineEdit()
+        self.projectInput.setPlaceholderText("프로젝트 이름 입력")
+        layout.addWidget(self.projectInput)
+        
+        self.createProjectButton = QPushButton("프로젝트 생성")
+        self.createProjectButton.clicked.connect(self.createProject)
+        layout.addWidget(self.createProjectButton)
+        
+        self.projectList = QListWidget()
+        self.projectList.itemClicked.connect(self.selectProject)
+        layout.addWidget(self.projectList)
+        
+        self.loadProjects()
+        
+        container = QWidget()
+        container.setLayout(layout)
+        self.setCentralWidget(container)
+    
+    def createProject(self):
+        project_name = self.projectInput.text().strip()
+        if project_name:
+            create_project(project_name)
+            self.loadProjects()
+    
+    def loadProjects(self):
+        self.projectList.clear()
+        self.projectList.addItems(list_projects())
+    
+    def selectProject(self, item):
+        project_name = item.text()
+        self.projectWindow = ProjectWindow(project_name)
+        self.projectWindow.show()
 
-        self.label = QLabel('데이터 파일을 업로드하세요.')
-        layout.addWidget(self.label)
+class ProjectWindow(QMainWindow):
+    def __init__(self, project_name):
+        super().__init__()
+        self.setWindowTitle(f"프로젝트: {project_name}")
+        self.setGeometry(200, 200, 800, 600)
+        self.project_name = project_name
+        self.df = None
+        
+        layout = QVBoxLayout()
+        
+        self.loadButton = QPushButton("CSV 파일 불러오기")
+        self.loadButton.clicked.connect(self.loadFile)
+        layout.addWidget(self.loadButton)
+        
+        self.tableWidget = QTableWidget()
+        layout.addWidget(self.tableWidget)
+        
+        self.anonymizeButton = QPushButton("비식별 처리 실행")
+        self.anonymizeButton.clicked.connect(self.applyAnonymization)
+        layout.addWidget(self.anonymizeButton)
+        
+        container = QWidget()
+        container.setLayout(layout)
+        self.setCentralWidget(container)
+    
+    def loadFile(self):
+        file_path, _ = QFileDialog.getOpenFileName(self, "CSV 파일 선택", "", "CSV Files (*.csv)")
+        if file_path:
+            project_path = get_project_path(self.project_name)
+            saved_path = os.path.join(project_path, "data.csv")
+            shutil.copy(file_path, saved_path)
+            self.df = load_csv(saved_path)
+            
+            print(f"DEBUG: self.df 타입 -> {type(self.df)}")  # 타입 확인
 
-        self.upload_button = QPushButton('데이터 업로드')
-        self.upload_button.clicked.connect(self.load_data)
-        layout.addWidget(self.upload_button)
+            self.displayData(self.df)
+    
+    def displayData(self, df):
+        if isinstance(df, dd.DataFrame):
+            sample_df = df.head(10).compute()
+        else:
+            sample_df = df.head(10)
 
-        self.anonymize_button = QPushButton('비식별 처리')
-        self.anonymize_button.clicked.connect(self.anonymize_data)
-        layout.addWidget(self.anonymize_button)
+        self.tableWidget.setRowCount(sample_df.shape[0])
+        self.tableWidget.setColumnCount(sample_df.shape[1])
+        self.tableWidget.setHorizontalHeaderLabels(sample_df.columns.tolist())
 
-        self.table = QTableView()
-        layout.addWidget(self.table)
+        for row_idx, row in sample_df.iterrows():
+            for col_idx, value in enumerate(row):
+                self.tableWidget.setItem(row_idx, col_idx, QTableWidgetItem(str(value)))
 
-        self.setLayout(layout)
+    
+    def applyAnonymization(self):
+        if self.df is not None:
+            self.df = anonymize_data(self.df)
+            save_csv(self.df, os.path.join(get_project_path(self.project_name), "anonymized.csv"))
+            self.displayData(self.df)
 
-    def load_data(self):
-        file, _ = QFileDialog.getOpenFileName(self, '데이터 파일 선택')
-        if file:
-            self.df = pd.read_csv(file)
-            self.model = DataFrameModel(self.df)
-            self.table.setModel(self.model)
-
-    def anonymize_data(self):
-        if hasattr(self, 'df'):
-            # 예시로 데이터 마스킹 처리
-            self.df['Sensitive Column'] = '****'  # 민감한 열을 마스킹
-            self.model = DataFrameModel(self.df)
-            self.table.setModel(self.model)
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = App()
+    window = MainWindow()
     window.show()
     sys.exit(app.exec())

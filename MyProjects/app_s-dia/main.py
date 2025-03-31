@@ -88,7 +88,7 @@ class ProjectWindow(QMainWindow):
     
     def displayData(self, df):
         if isinstance(df, dd.DataFrame):
-            sample_df = df.head(10).compute()
+            sample_df = df.compute().head(10)
         else:
             sample_df = df.head(10)
 

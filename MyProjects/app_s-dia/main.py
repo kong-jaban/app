@@ -2,11 +2,24 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, Q
 import sys
 import shutil
 import os
-from data_loader import load_csv, save_csv
-from anonymizer import anonymize_data
-from visualizer import plot_distribution
-from project_manager import create_project, list_projects, get_project_path
+from frontend.data_loader import load_csv, save_csv
+from frontend.anonymizer import anonymize_data
+from frontend.visualizer import plot_distribution
+from frontend.project_manager import create_project, list_projects, get_project_path
+from frontend.login_window import LoginWindow
+
 import dask.dataframe as dd
+
+class MyApp(QApplication):
+    def __init__(self, sys_argv):
+        super().__init__(sys_argv)
+        self.login_window = LoginWindow()
+        self.login_window.show()
+
+    def open_main_window(self):
+        self.main_window = MainWindow()
+        self.main_window.show()
+        self.login_window.close()
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -82,7 +95,7 @@ class ProjectWindow(QMainWindow):
             shutil.copy(file_path, saved_path)
             self.df = load_csv(saved_path)
             
-            print(f"DEBUG: self.df 타입 -> {type(self.df)}")  # 타입 확인
+            # print(f"DEBUG: self.df 타입 -> {type(self.df)}")  # 타입 확인
 
             self.displayData(self.df)
     

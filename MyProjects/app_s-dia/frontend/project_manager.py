@@ -2,7 +2,9 @@ import os
 import json
 import shutil
 
-PROJECTS_DIR = os.path.join(os.path.dirname(__file__), "projects")
+from pathlib import Path
+
+PROJECTS_DIR = Path(__file__).resolve().parent.parent / "projects"
 
 def create_project(name):
     os.makedirs(os.path.join(PROJECTS_DIR, name), exist_ok=True)

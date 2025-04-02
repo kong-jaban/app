@@ -1,46 +1,49 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QPushButton, QLabel
-from PySide6.QtCore import Qt
-from backend.db import authenticate_user  # db.py에서 만든 함수 가져오기
+from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
+import psycopg2
+import hashlib
 
-class LoginWindow(QWidget):
+class LoginDialog(QDialog):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Login")
-        
-        # Layout
-        self.layout = QVBoxLayout(self)
+        self.setWindowTitle("로그인")
+        self.resize(300, 150)
 
-        # 사용자 이름 입력
-        self.username_label = QLabel("Username", self)
-        self.username_input = QLineEdit(self)
+        layout = QVBoxLayout()
 
-        # 비밀번호 입력
-        self.password_label = QLabel("Password", self)
-        self.password_input = QLineEdit(self)
-        self.password_input.setEchoMode(QLineEdit.Password)  # 비밀번호 입력 시 숨김 처리
+        self.label_username = QLabel("아이디:")
+        self.input_username = QLineEdit()
+        layout.addWidget(self.label_username)
+        layout.addWidget(self.input_username)
 
-        # 로그인 버튼
-        self.login_button = QPushButton("Login", self)
-        self.login_button.clicked.connect(self.login)
+        self.label_password = QLabel("비밀번호:")
+        self.input_password = QLineEdit()
+        self.input_password.setEchoMode(QLineEdit.Password)
+        layout.addWidget(self.label_password)
+        layout.addWidget(self.input_password)
 
-        self.layout.addWidget(self.username_label)
-        self.layout.addWidget(self.username_input)
-        self.layout.addWidget(self.password_label)
-        self.layout.addWidget(self.password_input)
-        self.layout.addWidget(self.login_button)
+        self.login_button = QPushButton("로그인")
+        self.login_button.clicked.connect(self.login_user)
+        layout.addWidget(self.login_button)
 
-    def login(self):
-        # 사용자 이름과 비밀번호 입력 값 가져오기
-        username = self.username_input.text()
-        password = self.password_input.text()
+        self.setLayout(layout)
 
-        # 로그인 인증
-        user = authenticate_user(username, password)
-        if user:
-            print(f"Welcome, {username}!")  # 로그인 성공 시 환영 메시지
-            self.close()  # 로그인 창 닫기
+    def login_user(self):
+        username = self.input_username.text().strip()
+        password = self.input_password.text()
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
-            # MainWindow로 이동
-            self.parent().open_main_window()  # 부모 클래스의 open_main_window 호출
-        else:
-            print("Invalid username or password.")  # 실패 시 메시지 출력
+        try:
+            conn = psycopg2.connect(**DB_CONFIG)
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, hashed_password))
+            user = cur.fetchone()
+            cur.close()
+            conn.close()
+
+            if user:
+                QMessageBox.information(self, "성공", "로그인 성공!")
+                self.accept()
+            else:
+                QMessageBox.warning(self, "실패", "아이디 또는 비밀번호가 잘못되었습니다.")
+        except Exception as e:
+            QMessageBox.critical(self, "오류", f"로그인 실패: {e}")

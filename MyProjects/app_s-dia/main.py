@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QListWidget, QComboBox, QSpinBox, QLineEdit, QLabel
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton, QFileDialog, QTableWidget, QTableWidgetItem, QListWidget, QComboBox, QSpinBox, QLineEdit, QLabel, QDialog
 import sys
 import shutil
 import os
@@ -7,7 +7,6 @@ from frontend.anonymizer import anonymize_data
 from frontend.visualizer import plot_distribution
 from frontend.project_manager import create_project, list_projects, get_project_path
 from frontend.login_window import LoginWindow
-
 import dask.dataframe as dd
 
 class MyApp(QApplication):
@@ -120,8 +119,17 @@ class ProjectWindow(QMainWindow):
             save_csv(self.df, os.path.join(get_project_path(self.project_name), "anonymized.csv"))
             self.displayData(self.df)
 
+def main():
+    app = QApplication([])
+
+    # 로그인 창 띄우기
+    login_window = LoginWindow()
+    if login_window.exec():
+        main_window = MainWindow()
+        main_window.show()
+
+    app.exec()
+
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec())
+    main()
+

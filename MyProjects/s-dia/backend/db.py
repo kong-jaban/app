@@ -3,16 +3,19 @@ from psycopg2 import sql
 import hashlib
 
 DB_CONFIG = {
-    "dbname": "my_database",  # 영어만 사용
-    "user": "postgres",
-    "password": "securepassword123",  # 특수문자 없는 영문+숫자로 변경
-    "host": "localhost",
-    "port": "5432",
+    'dbname': 'sdiadb',
+    'user': 'postgres',
+    'password': 'your_password',
+    'host': 'localhost',
+    'port': 5432
 }
 
 def get_db_connection():
-    dsn = "dbname=my_database user=postgres password=mypassword123 host=localhost port=5432"
-    return psycopg2.connect(dsn, client_encoding='UTF8')
+    import locale
+    print("Default encoding:", locale.getpreferredencoding())
+    print("DB_CONFIG:", DB_CONFIG)
+    return psycopg2.connect(**DB_CONFIG, client_encoding='UTF8')
+
 
 def create_users_table():
     """Users 테이블 생성"""
@@ -24,7 +27,7 @@ def create_users_table():
             id SERIAL PRIMARY KEY,
             username VARCHAR(50) UNIQUE NOT NULL,
             email VARCHAR(100) UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL
+            password TEXT NOT NULL
         );
     """)
     
@@ -70,4 +73,13 @@ def check_login(username, password):
     cur.close()
     conn.close()
     
+    return user is not None
+
+def verify_user(username, password):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+    user = cur.fetchone()
+    cur.close()
+    conn.close()
     return user is not None

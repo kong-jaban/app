@@ -1,8 +1,12 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
 from backend.db import check_login  # 로그인 체크 함수
 from frontend.sign_up import SignUpWindow  # 회원가입 창 추가
+from backend.db import verify_user
+from frontend.project_window import ProjectWindow
+from PySide6.QtCore import Signal
 
 class LoginWindow(QWidget):
+    login_success = Signal(str)  # 사용자 ID 전달 가능
     def __init__(self):
         super().__init__()
         self.setWindowTitle("로그인")
@@ -34,13 +38,13 @@ class LoginWindow(QWidget):
     def handle_login(self):
         username = self.username_input.text()
         password = self.password_input.text()
-        
-        if check_login(username, password):
-            QMessageBox.information(self, "로그인 성공", "로그인되었습니다.")
-            self.close()  # 로그인 창 닫기
-        else:
-            QMessageBox.warning(self, "로그인 실패", "잘못된 사용자 이름 또는 비밀번호입니다.")
 
+        if verify_user(username, password):
+            self.project_window = ProjectWindow()
+            self.project_window.show()
+            self.close()
+        else:
+            QMessageBox.warning(self, "Login Failed", "Invalid username or password")
     def open_signup_window(self):
         self.signup_window = SignUpWindow()
         self.signup_window.show()

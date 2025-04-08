@@ -36,7 +36,7 @@ class LoginWindow(QWidget):
         self.setLayout(layout)
 
     def handle_login(self):
-        username = self.username_input.text()
+        username = self.username_input.text().strip()
         password = self.password_input.text()
 
         if verify_user(username, password):

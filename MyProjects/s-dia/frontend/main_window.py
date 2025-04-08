@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QCheckBox, QLab
 import dask.dataframe as dd
 from backend.data_processor import anonymize_columns
 from backend.project_manager import get_project_csv_path, save_processed_data
+import os
 
 class MainWindow(QWidget):
     def __init__(self, project_name):

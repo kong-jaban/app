@@ -25,10 +25,9 @@ def create_users_table():
     cur.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
-            username VARCHAR(50) UNIQUE NOT NULL,
-            email VARCHAR(100) UNIQUE NOT NULL,
+            username TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL
-        );
+        )
     """)
     
     conn.commit()
@@ -78,7 +77,13 @@ def check_login(username, password):
 def verify_user(username, password):
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+    
+    hashed_pw = hash_password(password)
+    cur.execute(
+        "SELECT * FROM users WHERE username = %s AND password_hash = %s",
+        (username, hashed_pw)
+    )
+    
     user = cur.fetchone()
     cur.close()
     conn.close()

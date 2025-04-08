@@ -12,7 +12,10 @@ os.environ["PYTHONIOENCODING"] = "utf-8"
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 def main():
     # DB 초기화 (테이블 생성)
+    print("#####Create user table...#######")
     create_users_table()
+    print("#####Success Create user table..(or 이미있음).#######")
+
 
     app = QApplication(sys.argv)
     login_window = LoginWindow()

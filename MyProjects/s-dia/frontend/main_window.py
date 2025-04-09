@@ -1,68 +1,82 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QCheckBox, QLabel, QFileDialog, QMessageBox
-import dask.dataframe as dd
-from backend.data_processor import anonymize_columns
-from backend.project_manager import get_project_csv_path, save_processed_data
+from PySide6.QtWidgets import (
+    QMainWindow, QWidget, QVBoxLayout, QTabWidget, QLabel,
+    QListWidget, QComboBox, QHBoxLayout
+)
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+import pandas as pd
 import os
 
-class MainWindow(QWidget):
-    def __init__(self, project_name):
+class MainWindow(QMainWindow):
+    
+    def __init__(self, project_path, csv_path):
         super().__init__()
-        self.setWindowTitle(f"Data Processing - {project_name}")
-        self.project_name = project_name
-        self.layout = QVBoxLayout(self)
+        self.setWindowTitle("프로젝트 메인")
+        self.project_path = project_path
+        self.csv_path = csv_path
+        self.df = pd.read_csv(csv_path)
+        self.distribution_data = self._precompute_distributions()
+        self._init_ui()
 
-        self.load_button = QPushButton("Load CSV")
-        self.load_button.clicked.connect(self.load_csv)
-        self.layout.addWidget(self.load_button)
+    def _init_ui(self):
+        self.tabs = QTabWidget()
+        self.tabs.addTab(self._create_distribution_tab(), "컬럼 분포 보기")
+        self.setCentralWidget(self.tabs)
 
-        self.label = QLabel("Select columns to anonymize:")
-        self.layout.addWidget(self.label)
+    def _create_distribution_tab(self):
+        widget = QWidget()
+        layout = QVBoxLayout()
 
-        self.checkboxes = {}
-        self.process_button = QPushButton("Anonymize Data")
-        self.process_button.clicked.connect(self.process_data)
-        self.layout.addWidget(self.process_button)
+        # 컬럼 리스트
+        self.column_list = QListWidget()
+        self.column_list.addItems(self.df.columns)
+        self.column_list.currentTextChanged.connect(self.display_distribution)
 
-        self.df = None
-        self.csv_path = get_project_csv_path(self.project_name)
+        # 차트 유형 선택
+        self.chart_type_combo = QComboBox()
+        self.chart_type_combo.addItems(["막대그래프", "히스토그램", "파이차트"])
+        self.chart_type_combo.currentTextChanged.connect(self.display_distribution)
 
-        # 프로젝트에 기존 CSV가 있으면 로드
-        self.load_existing_csv()
+        # 컨트롤 영역
+        control_layout = QHBoxLayout()
+        control_layout.addWidget(QLabel("컬럼 선택:"))
+        control_layout.addWidget(self.column_list)
+        control_layout.addWidget(QLabel("차트 유형:"))
+        control_layout.addWidget(self.chart_type_combo)
 
-    def load_existing_csv(self):
-        if os.path.exists(self.csv_path):
-            self.df = dd.read_csv(self.csv_path)
-            self.update_checkboxes(self.df.columns)
+        # 그래프 영역
+        self.canvas = FigureCanvas(Figure(figsize=(5, 3)))
+        layout.addLayout(control_layout)
+        layout.addWidget(self.canvas)
 
-    def load_csv(self):
-        file_path, _ = QFileDialog.getOpenFileName(self, "Open CSV File", "", "CSV Files (*.csv)")
-        if file_path:
-            self.df = dd.read_csv(file_path)
-            self.df.to_csv(self.csv_path, single_file=True, index=False)
-            self.update_checkboxes(self.df.columns)
-            QMessageBox.information(self, "Success", "CSV file loaded and saved to project.")
+        widget.setLayout(layout)
+        return widget
 
-    def update_checkboxes(self, columns):
-        for checkbox in self.checkboxes.values():
-            self.layout.removeWidget(checkbox)
-            checkbox.deleteLater()
-        self.checkboxes.clear()
+    def _precompute_distributions(self):
+        dist = {}
+        for col in self.df.columns:
+            if self.df[col].dtype == object or self.df[col].nunique() < 30:
+                dist[col] = self.df[col].value_counts()
+            else:
+                dist[col] = self.df[col].dropna()
+        return dist
 
-        for col in columns:
-            checkbox = QCheckBox(col)
-            self.checkboxes[col] = checkbox
-            self.layout.addWidget(checkbox)
+    def display_distribution(self, _):
+        col = self.column_list.currentItem().text()
+        chart_type = self.chart_type_combo.currentText()
+        data = self.distribution_data[col]
 
-    def process_data(self):
-        if self.df is None:
-            QMessageBox.warning(self, "Error", "No CSV file loaded!")
-            return
-        
-        selected_columns = [col for col, checkbox in self.checkboxes.items() if checkbox.isChecked()]
-        if not selected_columns:
-            QMessageBox.warning(self, "Error", "No columns selected for anonymization!")
-            return
+        self.canvas.figure.clf()
+        ax = self.canvas.figure.add_subplot(111)
 
-        processed_df = anonymize_columns(self.df, selected_columns)
-        save_processed_data(self.project_name, processed_df.compute())  # Dask 데이터프레임을 저장
-        QMessageBox.information(self, "Success", "Data anonymized and saved!")
+        if chart_type == "막대그래프" and isinstance(data, pd.Series):
+            data.plot(kind='bar', ax=ax, color="#6699cc")
+        elif chart_type == "히스토그램":
+            data.plot(kind='hist', ax=ax, bins=20, color="#66cc99")
+        elif chart_type == "파이차트" and isinstance(data, pd.Series):
+            data.plot(kind='pie', ax=ax, autopct='%1.1f%%')
+        else:
+            ax.text(0.5, 0.5, '시각화할 수 없습니다.', ha='center')
+
+        ax.set_title(f"{col} - {chart_type}")
+        self.canvas.draw()

@@ -1,6 +1,11 @@
 import pandas as pd
 import dask.dataframe as dd
 
+def get_column_distribution(df: pd.DataFrame, column: str):
+    if column not in df.columns:
+        return None, None
+    value_counts = df[column].value_counts()
+    return value_counts.index.tolist(), value_counts.values.tolist()
 def anonymize_columns(file_path):
     try:
         # Dask를 이용해 대용량 데이터 처리

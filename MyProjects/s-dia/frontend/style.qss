@@ -1,0 +1,44 @@
+/* style.qss */
+
+QWidget {
+    background-color: #f0f0f0;
+    font-family: 'Arial';
+    font-size: 12px;
+}
+
+QFrame {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+QLabel#titleLabel {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+QLabel#versionLabel {
+    font-size: 10px;
+    color: gray;
+}
+
+QPushButton {
+    background-color: #0078D7;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+QPushButton:hover {
+    background-color: #005a9e;
+}
+
+QLineEdit {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+QCheckBox {
+    margin: 5px 0;
+}

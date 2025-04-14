@@ -1,0 +1,30 @@
+QWidget {
+    font-family: 'Segoe UI';
+    font-size: 14px;
+    background-color: #f7f9fc;
+    color: #333;
+}
+
+QPushButton {
+    background-color: #4a90e2;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+}
+
+QPushButton:hover {
+    background-color: #357ABD;
+}
+
+QLineEdit, QComboBox {
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+}
+
+QTableView {
+    background-color: white;
+    border: 1px solid #ccc;
+}

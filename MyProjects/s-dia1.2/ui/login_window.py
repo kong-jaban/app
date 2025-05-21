@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QCheckBox, QMessageBox
 from PySide6.QtCore import Signal
 from util.auth import authenticate_user
+from ui.project_window import ProjectWindow
 
 class LoginWindow(QWidget):
     login_success = Signal(str)  # 로그인 성공 시 유저이름 보내는 시그널
@@ -39,6 +40,8 @@ class LoginWindow(QWidget):
         if authenticate_user(username, password):
             QMessageBox.information(self, "로그인 성공", f"{username}님 환영합니다.")
             self.login_success.emit(username)
+            self.project_window = ProjectWindow(username)
+            self.project_window.show()
             self.close()
         else:
             QMessageBox.warning(self, "로그인 실패", "아이디 또는 비밀번호가 틀렸습니다.")

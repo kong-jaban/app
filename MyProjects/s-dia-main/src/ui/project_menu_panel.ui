@@ -1,0 +1,25 @@
+QPushButton#close_btn {
+    background-color: #6c757d;
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1px solid #adb5bd;
+    color: white;
+    min-height: 32px;
+}
+
+<item>
+ <widget class="QPushButton" name="close_btn">
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>48</height>
+   </size>
+  </property>
+  <property name="text">
+   <string>프로젝트 닫기</string>
+  </property>
+ </widget>
+</item> 

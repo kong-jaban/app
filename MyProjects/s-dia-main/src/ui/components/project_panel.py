@@ -87,7 +87,7 @@ class DataSourceDialog(QDialog):
                 return
                 
             if not data_path:
-                QMessageBox.warning(self, "입력 오류", "원본 데이터를 선택택하세요.")
+                QMessageBox.warning(self, "입력 오류", "원본 데이터를 선택하세요.")
                 self.data_path_input.setFocus()
                 return
                 

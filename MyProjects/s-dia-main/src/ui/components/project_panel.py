@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (QWidget, QMessageBox, QVBoxLayout, QHBoxLayout, Q
 from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtUiTools import QUiLoader
+from ..dialogs.distribution_dialog import DistributionDialog
 import os
 import sys
 import logging
@@ -368,6 +369,7 @@ class ProjectPanel(QWidget):
                 
                 # 프로젝트 UUID 디렉토리
                 project_dir = os.path.join(data_dir, self.project_data.get('uuid', ''))
+                os.makedirs(project_dir, exist_ok=True)
                 datasource_path = os.path.join(project_dir, 'datasource.json')
                 
                 # 기존 데이터 소스 목록 로드
@@ -421,7 +423,7 @@ class ProjectPanel(QWidget):
             self.edit_data_source(data)
         elif action == dist_action:
             # TODO: 분포 기능 구현 필요
-            pass
+            self.show_distribution_dialog(data)
         elif action == del_action:
             self.delete_data_source(data)
 
@@ -527,3 +529,10 @@ class ProjectPanel(QWidget):
         super().showEvent(event)
         # 이름 줄임 처리 업데이트
         QTimer.singleShot(0, self.update_project_name_elision) 
+        
+    def show_distribution_dialog(self, data):
+        try:
+            dialog = DistributionDialog(self, data)  # 예: data에는 uuid, name, path 포함
+            dialog.exec()
+        except Exception as e:
+            self.logger.error(f"분포 보기 중 오류: {str(e)}")

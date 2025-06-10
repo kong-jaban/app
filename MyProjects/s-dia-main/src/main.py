@@ -7,6 +7,13 @@ import traceback
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QIcon
 
+# UTF-8 인코딩 설정
+import locale
+import codecs
+sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer)
+sys.stdin = codecs.getreader('utf-8')(sys.stdin.buffer)
+os.environ["PYTHONIOENCODING"] = "utf-8"
+
 # 프로젝트 루트 디렉토리를 Python 경로에 추가
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
@@ -52,7 +59,6 @@ def main():
                         win32gui.SetForegroundWindow(hwnd)
                         return
                     else:
-                        # print("기존 창을 찾을 수 없습니다. 새 창을 생성합니다.")
                         continue
             except (psutil.NoSuchProcess, psutil.AccessDenied):
                 continue

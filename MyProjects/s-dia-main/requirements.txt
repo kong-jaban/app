@@ -1,4 +1,9 @@
-PySide6>=6.5.0
+PySide6==6.6.1
+pandas==2.1.4
+matplotlib==3.8.2
+seaborn==0.13.0
+openpyxl==3.1.2
+chardet==5.2.0
 pyinstaller>=6.3.0
 pywin32>=306
 psutil>=5.9.0

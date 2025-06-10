@@ -62,18 +62,18 @@ QPushButton:hover {
 }
 QPushButton#save_button {
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #80bdff;
+    border-color: #80bdff;
     font-weight: bold;
 }
 QPushButton#save_button:hover {
     color: #fff;
-    background-color: #0069d9;
-    border-color: #0062cc;
+    background-color: #80bdff;
+    border-color: #80bdff;
 }
 QPushButton#save_button:pressed {
-    background-color: #0062cc;
-    border-color: #005cbf;
+    background-color: #80bdff;
+    border-color: #80bdff;
 }
 QFrame#form_container {
     background-color: white;

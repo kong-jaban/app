@@ -1,16 +1,20 @@
 from PySide6.QtWidgets import (QWidget, QMessageBox, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QDialogButtonBox,
                               QTextEdit, QPushButton, QFrame, QListWidget, QListWidgetItem, QDialog,
-                              QMainWindow, QComboBox, QFileDialog, QButtonGroup, QRadioButton, QMenu, QSizePolicy)
+                              QMainWindow, QComboBox, QFileDialog, QButtonGroup, QRadioButton, QMenu, QSizePolicy,
+                              QStackedWidget)
 from PySide6.QtGui import QAction
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtUiTools import QUiLoader
 from ..dialogs.distribution_dialog import DistributionDialog
+from .distribution_widget import DistributionWidget
 import os
 import sys
 import logging
 import json
 import uuid
 import platform
+import pandas as pd
+import chardet
 
 from utils.string_utils import get_file_extension
 
@@ -223,6 +227,7 @@ class ProjectPanel(QWidget):
         self.project_data = project_data
         self.parent = parent
         self.logger = logging.getLogger(__name__)        
+        self.distribution_widget = None
         self.setup_ui()
         
     def setup_ui(self):
@@ -246,6 +251,18 @@ class ProjectPanel(QWidget):
             self.data_add_btn = self.ui.findChild(QPushButton, "data_add_btn")
             self.flow_add_btn = self.ui.findChild(QPushButton, "flow_add_btn")
             self.close_btn = self.ui.findChild(QPushButton, "close_btn")
+            
+            # 스택 위젯 추가
+            self.stacked_widget = QStackedWidget()
+            self.main_content = self.ui.findChild(QWidget, "main_content")
+            
+            # 메인 레이아웃 설정
+            main_layout = QVBoxLayout(self)
+            main_layout.setContentsMargins(0, 0, 0, 0)
+            main_layout.addWidget(self.stacked_widget)
+            
+            # 스택 위젯에 메인 콘텐츠 추가
+            self.stacked_widget.addWidget(self.ui)
             
             # 프로젝트 정보 설정
             self.desc_text.setPlainText(self.project_data.get('description', ''))
@@ -292,9 +309,6 @@ class ProjectPanel(QWidget):
             
             self.data_list.setContextMenuPolicy(Qt.CustomContextMenu)
             self.data_list.customContextMenuRequested.connect(self.show_data_source_menu)
-            
-            # 레이아웃 설정
-            self.setLayout(self.ui.layout())
             
         except Exception as e:
             self.logger.error(f"프로젝트 패널 UI 설정 중 오류 발생: {str(e)}")
@@ -400,32 +414,66 @@ class ProjectPanel(QWidget):
             
     def _on_close(self):
         """닫기 버튼 클릭 처리"""
+        # 분포 위젯이 있으면 제거
+        if self.distribution_widget:
+            self.distribution_widget.deleteLater()
+            self.distribution_widget = None
+            return
+            
+        # 프로젝트 패널 닫기
         if self.parent:
             self.parent.close_project_panel()
 
     def show_data_source_menu(self, pos):
-        item = self.data_list.itemAt(pos)
-        if not item or not item.isSelected() or not (item.flags() & Qt.ItemIsEnabled):
-            return
-        # 데이터 소스 이름으로 데이터 찾기
-        name = item.text()
-        # 데이터 소스 목록 로드
-        data_sources = self._get_current_data_sources()
-        data = next((d for d in data_sources if d.get('name') == name), None)
-        if not data:
-            return
-        menu = QMenu(self)
-        edit_action = menu.addAction('수정')
-        dist_action = menu.addAction('분포')
-        del_action = menu.addAction('삭제')
-        action = menu.exec_(self.data_list.viewport().mapToGlobal(pos))
-        if action == edit_action:
-            self.edit_data_source(data)
-        elif action == dist_action:
-            # TODO: 분포 기능 구현 필요
-            self.show_distribution_dialog(data)
-        elif action == del_action:
-            self.delete_data_source(data)
+        """데이터 소스 컨텍스트 메뉴를 표시합니다."""
+        try:
+            item = self.data_list.itemAt(pos)
+            if not item or not item.isSelected() or not (item.flags() & Qt.ItemIsEnabled):
+                return
+                
+            # 데이터 소스 이름으로 데이터 찾기
+            name = item.text()
+            data_sources = self._get_current_data_sources()
+            data = next((d for d in data_sources if d.get('name') == name), None)
+            
+            if not data:
+                return
+                
+            menu = QMenu(self)
+            menu.setStyleSheet("""
+                QMenu {
+                    background-color: white;
+                    border: 1px solid #dee2e6;
+                    border-radius: 4px;
+                    padding: 5px;
+                }
+                QMenu::item {
+                    padding: 8px 20px;
+                    color: #495057;
+                }
+                QMenu::item:selected {
+                    background-color: #e9ecef;
+                    color: #000;
+                }
+            """)
+            
+            edit_action = menu.addAction('수정')
+            dist_action = menu.addAction('분포')
+            del_action = menu.addAction('삭제')
+            
+            action = menu.exec_(self.data_list.viewport().mapToGlobal(pos))
+            
+            if action == edit_action:
+                self.edit_data_source(data)
+            elif action == dist_action:
+                self.show_distribution_dialog(data)
+            elif action == del_action:
+                self.delete_data_source(data)
+                
+        except Exception as e:
+            self.logger.error(f"데이터 소스 메뉴 표시 중 오류: {str(e)}")
+            import traceback
+            self.logger.error(traceback.format_exc())
 
     def delete_data_source(self, data):
         name = data.get('name', '')
@@ -529,10 +577,130 @@ class ProjectPanel(QWidget):
         super().showEvent(event)
         # 이름 줄임 처리 업데이트
         QTimer.singleShot(0, self.update_project_name_elision) 
-        
+
     def show_distribution_dialog(self, data):
+        """데이터 소스의 컬럼 분포를 보여주는 위젯을 표시합니다."""
         try:
-            dialog = DistributionDialog(self, data)  # 예: data에는 uuid, name, path 포함
-            dialog.exec()
+            self.logger.info(f"분포 위젯 표시 시작: {data.get('name')}")
+            
+            # 데이터 소스 정보 확인
+            file_path = data.get('data_path')
+            if not file_path or not os.path.exists(file_path):
+                QMessageBox.critical(self, "오류", "데이터 파일을 찾을 수 없습니다.")
+                return
+            
+            # 파일 타입 확인
+            data_type = data.get('data_type', '').lower()
+            
+            # 데이터 로드
+            if data_type == 'csv':
+                # CSV 파일 설정 가져오기
+                user_encoding = data.get('charset', 'UTF-8')
+                separator = data.get('separator', ',')
+                has_header = data.get('has_header', '있음')
+                
+                # 구분자가 'TAB'인 경우 처리
+                if separator == 'TAB':
+                    separator = '\t'
+                
+                # 헤더 설정
+                header = 0 if has_header == '있음' else None
+                
+                # 먼저 바이너리 모드로 파일을 읽어서 인코딩 확인
+                with open(file_path, 'rb') as file:
+                    raw_data = file.read()
+                    result = chardet.detect(raw_data)
+                    detected_encoding = result['encoding']
+                    
+                self.logger.info(f"감지된 파일 인코딩: {detected_encoding}")
+                
+                try:
+                    # 감지된 인코딩으로 시도
+                    df = pd.read_csv(
+                        file_path,
+                        encoding=detected_encoding,
+                        sep=separator,
+                        header=header
+                    )
+                except Exception as e:
+                    self.logger.warning(f"감지된 인코딩({detected_encoding})으로 로드 실패, UTF-8 시도")
+                    try:
+                        # UTF-8로 시도
+                        df = pd.read_csv(
+                            file_path,
+                            encoding='utf-8',
+                            sep=separator,
+                            header=header
+                        )
+                    except Exception as e2:
+                        self.logger.warning("UTF-8 로드 실패, CP949 시도")
+                        try:
+                            # CP949로 시도
+                            df = pd.read_csv(
+                                file_path,
+                                encoding='cp949',
+                                sep=separator,
+                                header=header
+                            )
+                        except Exception as e3:
+                            raise Exception(f"파일을 읽을 수 없습니다. 지원되는 인코딩이 아닙니다.\n시도한 인코딩: {detected_encoding}, UTF-8, CP949")
+                
+            elif data_type in ['xlsx', 'xls']:
+                self.logger.info("Excel 파일 로드 시도")
+                df = pd.read_excel(file_path)
+                self.logger.info("Excel 파일 로드 성공")
+            else:
+                QMessageBox.critical(self, "오류", f"지원하지 않는 파일 형식입니다: {data_type}")
+                return
+            
+            # 데이터가 비어있는지 확인
+            if df.empty:
+                QMessageBox.warning(self, "경고", "데이터가 비어있습니다.")
+                return
+                
+            # 기존 분포 위젯이 있으면 제거
+            if self.distribution_widget:
+                self.logger.info("기존 분포 위젯 제거")
+                self.distribution_widget.deleteLater()
+            
+            # 새 분포 위젯 생성
+            self.logger.info("새 분포 위젯 생성")
+            self.distribution_widget = DistributionWidget(df=df, parent=None)
+            
+            # 메인 윈도우 찾기
+            main_window = self.window()
+            if main_window:
+                # projects_container 찾기
+                projects_container = main_window.findChild(QWidget, "projects_container")
+                
+                if projects_container:
+                    self.logger.info("projects_container에 위젯 추가")
+                    layout = projects_container.layout()
+                    if not layout:
+                        layout = QHBoxLayout(projects_container)
+                        layout.setContentsMargins(0, 0, 0, 0)
+                        layout.setSpacing(0)
+                    
+                    # 기존 위젯들을 제거하고 새로운 레이아웃 설정
+                    for i in reversed(range(layout.count())): 
+                        widget = layout.itemAt(i).widget()
+                        if widget:
+                            widget.setParent(None)
+                    
+                    # 프로젝트 패널과 분포 위젯을 추가
+                    layout.addWidget(self)
+                    layout.addWidget(self.distribution_widget, stretch=1)
+                    
+                    self.logger.info("분포 위젯 표시 완료")
+                else:
+                    self.logger.error("projects_container를 찾을 수 없음")
+                    QMessageBox.critical(self, "오류", "UI 컴포넌트를 찾을 수 없습니다.")
+            else:
+                self.logger.error("메인 윈도우를 찾을 수 없음")
+                QMessageBox.critical(self, "오류", "메인 윈도우를 찾을 수 없습니다.")
+            
         except Exception as e:
             self.logger.error(f"분포 보기 중 오류: {str(e)}")
+            import traceback
+            self.logger.error(traceback.format_exc())
+            QMessageBox.critical(self, "오류", f"데이터 로드 중 오류가 발생했습니다.\n{str(e)}")

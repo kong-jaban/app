@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'Distribution.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.8.2
+## Created by: Qt User Interface Compiler version 6.6.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -33,7 +33,7 @@ class Ui_DistributionDialog(object):
 "    font-weight: bold;\n"
 "}\n"
 "QListWidget {\n"
-"    background-color: #343a40;\n"
+"    background-color: #adb5bd;\n"
 "    border: 1px solid #adb5bd;\n"
 "    border-radius: 4px;\n"
 "    color: #e9ecef;\n"
@@ -45,7 +45,7 @@ class Ui_DistributionDialog(object):
 "    background-color: #495057;\n"
 "}\n"
 "QComboBox {\n"
-"    background-color: #343a40;\n"
+"    background-color: #adb5bd;\n"
 "    border: 1px solid #adb5bd;\n"
 "    border-radius: 4px;\n"
 "    color: #e9ecef;\n"
@@ -60,7 +60,7 @@ class Ui_DistributionDialog(object):
 "    height: 12px;\n"
 "}\n"
 "QFrame {\n"
-"    background-color: #495057;\n"
+"    background-color: #adb5bd;\n"
 "    border-radius: 6px;\n"
 "    border: 1px solid #adb5bd;\n"
 "}\n"
@@ -105,7 +105,7 @@ class Ui_DistributionDialog(object):
 
         self.controlsLayout.addWidget(self.chartTypeComboBox)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.controlsLayout.addItem(self.horizontalSpacer)
 
@@ -114,7 +114,7 @@ class Ui_DistributionDialog(object):
 
         self.plotWidget = QWidget(self.rightPanel)
         self.plotWidget.setObjectName(u"plotWidget")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.plotWidget.sizePolicy().hasHeightForWidth())

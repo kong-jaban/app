@@ -10,10 +10,10 @@ import sys
 import logging
 from utils.crypto import CryptoUtil, SecretStorage
 from .common.context_menu import CustomContextMenuFilter
-from .dialogs.new_project_dialog import NewProjectDialog
+from .dialogs.project_dialog import ProjectDialog
 from .components.project_card import ProjectCard
 from .components.confirm_dialog import ConfirmDialog
-from .components.project_panel import ProjectPanel
+from .panels.project_panel import ProjectPanel
 from .dialogs.user_info_dialog import UserInfoDialog
 import json
 import platform
@@ -101,6 +101,22 @@ class MainWindow(QMainWindow):
         
         # 창 제목 설정
         self.setWindowTitle("S-DIA")
+        
+        # 아이콘 설정
+        if getattr(sys, 'frozen', False):
+            base_path = sys._MEIPASS
+        else:
+            base_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+        
+        # 윈도우 아이콘 설정
+        icon_path = os.path.join(base_path, 'src', 'ui', 'resources', 'images', 's-dia.ico')
+        if os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
+            # 작업 표시줄 아이콘 설정
+            if platform.system() == 'Windows':
+                import ctypes
+                myappid = 'upsdata.s-dia.1.0'  # 임의의 고유 문자열
+                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
         
         # UI 파일 로드
         loader = QUiLoader()
@@ -339,8 +355,8 @@ class MainWindow(QMainWindow):
         self.logger.info("수정 선택됨")
         if card.project_data:
             # 프로젝트 수정 다이얼로그 표시
-            dialog = NewProjectDialog(self, card.project_data)
-            if dialog.exec() == NewProjectDialog.Accepted:
+            dialog = ProjectDialog(self, card.project_data)
+            if dialog.exec() == ProjectDialog.Accepted:
                 self.init_projects_layout()  # 프로젝트 목록 새로고침
                 
     def on_project_delete(self, card):
@@ -805,8 +821,8 @@ class MainWindow(QMainWindow):
 
     def show_new_project_dialog(self):
         """새 프로젝트 다이얼로그 표시"""
-        dialog = NewProjectDialog(self)
-        if dialog.exec() == NewProjectDialog.Accepted:
+        dialog = ProjectDialog(self)
+        if dialog.exec() == ProjectDialog.Accepted:
             self.init_projects_layout()  # 프로젝트 목록 새로고침
 
     def show_projects(self):

@@ -9,6 +9,8 @@ import logging
 import platform
 import sys
 
+from ..common.context_menu import CustomContextMenuFilter
+
 class MenuButton(QPushButton):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -65,6 +67,7 @@ class ProjectCard(QFrame):
         self.project_data = project_data
         self.parent = parent
         self.drag_start_position = None
+        self.context_menu_filter = CustomContextMenuFilter()
         
         # 데이터 폴더 상태 검사
         self.check_data_folder_status()
@@ -310,6 +313,7 @@ class ProjectCard(QFrame):
         desc_edit.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         desc_edit.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         desc_edit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        desc_edit.installEventFilter(self.context_menu_filter)
         
         # 경고 상태에 따른 스크롤바 스타일 설정
         if not self.folder_exists:

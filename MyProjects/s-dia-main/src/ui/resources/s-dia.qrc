@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icon">
+    <file>images/icons8-opened-folder-96.png</file>
     <file>images/134216_menu_lines_hamburger_icon.png</file>
     <file>images/1564491_add_create_new_plus_icon.png</file>
     <file>images/add.png</file>

@@ -10,7 +10,7 @@ from PySide6.QtGui import QAction
 from ..common.context_menu import CustomContextMenuFilter
 from datetime import datetime
 
-class NewProjectDialog(QDialog):
+class ProjectDialog(QDialog):
     def __init__(self, parent=None, project_data=None):
         super().__init__(parent)
         self.logger = logging.getLogger(__name__)
@@ -18,11 +18,68 @@ class NewProjectDialog(QDialog):
         
         # UI 로드
         loader = QUiLoader()
-        self.ui = loader.load("src/ui/dialogs/new_project.ui")
+        self.ui = loader.load("src/ui/dialogs/project_dialog.ui")
         
         # 다이얼로그 설정
         self.setFixedSize(self.ui.size())
         self.setWindowFlags(Qt.Dialog | Qt.MSWindowsFixedSizeDialogHint)
+        
+        # 스타일시트 설정
+        self.setStyleSheet("""
+            QDialog {
+                background-color: #e9ecef;
+            }
+            QLabel {
+                color: #000000;
+                font-size: 14px;
+                background-color: transparent;
+            }
+            QLineEdit, QTextEdit {
+                padding: 8px 12px;
+                border: 1px solid #ced4da;
+                border-radius: 4px;
+                background-color: #ffffff;
+                font-size: 14px;
+                min-height: 20px;
+                color: #495057;
+            }
+            QLineEdit:focus, QTextEdit:focus {
+                border: 1px solid #80bdff;
+                border-color: #80bdff;
+                outline: 0;
+            }
+            QPushButton {
+                color: #495057;
+                background-color: #ffffff;
+                border: 1px solid #ced4da;
+                padding: 8px;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+            QPushButton:hover {
+                background-color: #f8f9fa;
+            }
+            QPushButton#create_button {
+                color: #fff;
+                background-color: #007bff;
+                border-color: #007bff;
+                font-weight: bold;
+            }
+            QPushButton#create_button:hover {
+                color: #fff;
+                background-color: #0069d9;
+                border-color: #0062cc;
+            }
+            QPushButton#create_button:pressed {
+                background-color: #0062cc;
+                border-color: #005cbf;
+            }
+            QFrame#form_container {
+                background-color: white;
+                border-radius: 8px;
+                border: 1px solid #dee2e6;
+            }
+        """)
         
         # UI를 현재 다이얼로그의 레이아웃으로 설정
         if self.layout() is None:
@@ -35,8 +92,39 @@ class NewProjectDialog(QDialog):
         
         # 버튼 연결
         self.ui.browse_button.clicked.connect(self.browse_directory)
-        self.ui.create_button.clicked.connect(self.accept)
+        self.ui.create_button.clicked.connect(self.validate_and_accept)
         self.ui.cancel_button.clicked.connect(self.reject)
+        self.ui.cancel_button.setStyleSheet("""
+            QPushButton {
+                color: #495057;
+                background-color: #ffffff;
+                border: 1px solid #ced4da;
+                padding: 8px;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+            QPushButton:hover {
+                background-color: #f8f9fa;
+            }
+        """)
+        self.ui.create_button.setStyleSheet("""
+            QPushButton#create_button {
+                color: #fff;
+                background-color: #007bff;
+                border-color: #007bff;
+                /* box-shadow: none; */
+                font-weight: bold;
+            }
+            QPushButton#create_button:hover {
+                color: #fff;
+                background-color: #0069d9;
+                border-color: #0062cc;
+            }
+            QPushButton#create_button:pressed {
+                background-color: #0062cc;
+                border-color: #005cbf;
+            }
+        """)
         
         # 컨텍스트 메뉴 필터 설정
         self.context_menu_filter = CustomContextMenuFilter()
@@ -70,52 +158,6 @@ class NewProjectDialog(QDialog):
             self.setWindowTitle("새 프로젝트")
             self.ui.title_label.setText("새 프로젝트")  # 제목 라벨 수정
             self.ui.create_button.setText("생성")
-        
-    def show_description_context_menu(self, pos):
-        """QTextEdit 컨텍스트 메뉴"""
-        menu = QMenu(self)
-        
-        # 실행 취소
-        undo_action = QAction("실행 취소", self)
-        undo_action.triggered.connect(self.ui.description_input.undo)
-        undo_action.setEnabled(self.ui.description_input.document().isUndoAvailable())
-        menu.addAction(undo_action)
-        
-        # 다시 실행
-        redo_action = QAction("다시 실행", self)
-        redo_action.triggered.connect(self.ui.description_input.redo)
-        redo_action.setEnabled(self.ui.description_input.document().isRedoAvailable())
-        menu.addAction(redo_action)
-        
-        menu.addSeparator()
-        
-        has_selection = bool(self.ui.description_input.textCursor().selectedText())
-        
-        # 잘라내기
-        cut_action = QAction("잘라내기", self)
-        cut_action.triggered.connect(self.ui.description_input.cut)
-        cut_action.setEnabled(has_selection)
-        menu.addAction(cut_action)
-        
-        # 복사
-        copy_action = QAction("복사", self)
-        copy_action.triggered.connect(self.ui.description_input.copy)
-        copy_action.setEnabled(has_selection)
-        menu.addAction(copy_action)
-        
-        # 붙여넣기
-        paste_action = QAction("붙여넣기", self)
-        paste_action.triggered.connect(self.ui.description_input.paste)
-        menu.addAction(paste_action)
-        
-        menu.addSeparator()
-        
-        # 모두 선택
-        select_all_action = QAction("모두 선택", self)
-        select_all_action.triggered.connect(self.ui.description_input.selectAll)
-        menu.addAction(select_all_action)
-        
-        menu.exec_(self.ui.description_input.mapToGlobal(pos))
         
     def browse_directory(self):
         """데이터 폴더 선택"""
@@ -182,68 +224,8 @@ class NewProjectDialog(QDialog):
             
         return True
             
-    def save_project(self, project_data):
-        """프로젝트 저장"""
-        try:
-            # 기존 프로젝트 목록 로드
-            projects = []
-            if os.path.exists(self.projects_file):
-                with open(self.projects_file, 'r', encoding='utf-8') as f:
-                    projects = json.load(f)
-                    
-            # 새 프로젝트 추가
-            projects.append(project_data)
-            
-            # 프로젝트 목록 저장
-            with open(self.projects_file, 'w', encoding='utf-8') as f:
-                json.dump(projects, f, ensure_ascii=False, indent=2)
-                
-            return True
-        except Exception as e:
-            QMessageBox.critical(self, "저장 오류", f"프로젝트 저장 중 오류가 발생했습니다.\n{str(e)}")
-            return False
-            
     def validate_and_accept(self):
-        """필수 입력 항목 검증"""
-        if not self.ui.name_input.text().strip():
-            QMessageBox.warning(self, "입력 오류", "프로젝트 명을 입력하세요.")
-            self.ui.name_input.setFocus()
-            return
-            
-        data_dir = self.ui.data_input.text().strip()
-        if not data_dir:
-            QMessageBox.warning(self, "입력 오류", "데이터 폴더를 선택하세요.")
-            self.ui.data_input.setFocus()
-            return
-            
-        # 디렉토리 권한 확인
-        if not self.check_directory_permissions(data_dir):
-            self.ui.data_input.setFocus()
-            return
-            
-        # 프로젝트 데이터 저장
-        project_data = self.get_project_data()
-        if self.save_project(project_data):
-            self.accept()
-            
-    def get_project_data(self):
-        """프로젝트 데이터 반환"""
-        project_data = {
-            'name': self.ui.name_input.text().strip(),
-            'data_directory': self.ui.data_input.text().strip(),
-            'description': self.ui.description_input.toPlainText().strip()
-        }
-        
-        # 프로젝트 수정 시 기존 UUID 유지
-        if self.project_data and 'uuid' in self.project_data:
-            project_data['uuid'] = self.project_data['uuid']
-        else:
-            project_data['uuid'] = str(uuid.uuid4())
-            
-        return project_data
-
-    def accept(self):
-        """확인 버튼 클릭 시 처리"""
+        """필수 입력 항목 검증 및 프로젝트 저장"""
         try:
             # 입력값 검증
             name = self.name_input.text().strip()
@@ -288,7 +270,7 @@ class NewProjectDialog(QDialog):
             if self.project_data:
                 # 프로젝트 수정 모드
                 for i, project in enumerate(projects):
-                    if project.get('name') == self.project_data.get('name'):
+                    if project.get('uuid') == self.project_data.get('uuid'):
                         # 기존 프로젝트 정보 유지
                         project_data['created_at'] = project.get('created_at', datetime.now().isoformat())
                         projects[i] = project_data

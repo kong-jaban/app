@@ -62,6 +62,7 @@ def main():
         app = QApplication(sys.argv)
         app.setApplicationName("S-DIA")
         
+        
         # 아이콘 설정
         if getattr(sys, 'frozen', False):
             # PyInstaller로 생성된 실행 파일인 경우

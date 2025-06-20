@@ -278,6 +278,7 @@ class LoginWindow(QMainWindow):
             self.context_filter = CustomContextMenuFilter(self)
             self.ui.id_input.installEventFilter(self.context_filter)
             self.ui.pw_input.installEventFilter(self.context_filter)
+
             
             # 이벤트 연결
             self.ui.login_button.clicked.connect(self.login)

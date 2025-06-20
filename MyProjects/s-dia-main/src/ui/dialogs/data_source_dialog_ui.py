@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'data_source_dialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.1
+## Created by: Qt User Interface Compiler version 6.9.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -93,7 +93,7 @@ class Ui_DataSourceDialog(object):
         self.horizontalLayout.setSpacing(4)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer_2)
 
@@ -106,7 +106,7 @@ class Ui_DataSourceDialog(object):
 
         self.horizontalLayout.addWidget(self.title_label)
 
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer_3)
 
@@ -142,13 +142,13 @@ class Ui_DataSourceDialog(object):
 
         self.name_layout.addWidget(self.name_required)
 
-        self.horizontalSpacer_4 = QSpacerItem(10, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_4 = QSpacerItem(10, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.name_layout.addItem(self.horizontalSpacer_4)
 
         self.name_input = QLineEdit(self.name_container)
         self.name_input.setObjectName(u"name_input")
-        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.name_input.sizePolicy().hasHeightForWidth())
@@ -182,13 +182,13 @@ class Ui_DataSourceDialog(object):
 
         self.desc_layout.addWidget(self.label)
 
-        self.horizontalSpacer_5 = QSpacerItem(32, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_5 = QSpacerItem(32, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.desc_layout.addItem(self.horizontalSpacer_5)
 
         self.data_path_input = QLineEdit(self.data_path_container)
         self.data_path_input.setObjectName(u"data_path_input")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         sizePolicy1.setHorizontalStretch(1)
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.data_path_input.sizePolicy().hasHeightForWidth())
@@ -221,7 +221,7 @@ class Ui_DataSourceDialog(object):
 
         self.type_layout.addWidget(self.type_text)
 
-        self.horizontalSpacer = QSpacerItem(58, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer = QSpacerItem(58, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.type_layout.addItem(self.horizontalSpacer)
 
@@ -230,7 +230,7 @@ class Ui_DataSourceDialog(object):
 
         self.type_layout.addWidget(self.label_2)
 
-        self.horizontalSpacer_6 = QSpacerItem(8, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_6 = QSpacerItem(8, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.type_layout.addItem(self.horizontalSpacer_6)
 
@@ -285,7 +285,7 @@ class Ui_DataSourceDialog(object):
 
         self.type_layout.addWidget(self.charset_input)
 
-        self.type_spacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.type_spacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.type_layout.addItem(self.type_spacer)
 
@@ -298,7 +298,7 @@ class Ui_DataSourceDialog(object):
         self.type_layout1.setSpacing(2)
         self.type_layout1.setObjectName(u"type_layout1")
         self.type_layout1.setContentsMargins(0, 0, 0, 4)
-        self.horizontalSpacer_7 = QSpacerItem(126, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_7 = QSpacerItem(126, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.type_layout1.addItem(self.horizontalSpacer_7)
 
@@ -307,7 +307,7 @@ class Ui_DataSourceDialog(object):
 
         self.type_layout1.addWidget(self.label_3)
 
-        self.horizontalSpacer_8 = QSpacerItem(38, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_8 = QSpacerItem(38, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.type_layout1.addItem(self.horizontalSpacer_8)
 
@@ -363,7 +363,7 @@ class Ui_DataSourceDialog(object):
 
         self.type_layout1.addWidget(self.separator_input)
 
-        self.type_spacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.type_spacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.type_layout1.addItem(self.type_spacer_2)
 
@@ -376,7 +376,7 @@ class Ui_DataSourceDialog(object):
         self.type_layout2.setSpacing(2)
         self.type_layout2.setObjectName(u"type_layout2")
         self.type_layout2.setContentsMargins(0, 0, 0, 4)
-        self.horizontalSpacer_10 = QSpacerItem(126, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_10 = QSpacerItem(126, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.type_layout2.addItem(self.horizontalSpacer_10)
 
@@ -385,7 +385,7 @@ class Ui_DataSourceDialog(object):
 
         self.type_layout2.addWidget(self.label_4)
 
-        self.horizontalSpacer_9 = QSpacerItem(24, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Minimum)
+        self.horizontalSpacer_9 = QSpacerItem(24, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
 
         self.type_layout2.addItem(self.horizontalSpacer_9)
 
@@ -439,14 +439,14 @@ class Ui_DataSourceDialog(object):
 
         self.type_layout2.addWidget(self.has_header_input)
 
-        self.type_spacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.type_spacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.type_layout2.addItem(self.type_spacer_3)
 
 
         self.verticalLayout_2.addWidget(self.csv_3_container)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 
@@ -455,7 +455,7 @@ class Ui_DataSourceDialog(object):
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalSpacer_11 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_11 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_11)
 

@@ -1,0 +1,43 @@
+flow:
+  start:
+    parameters:
+      datasource:
+        schema:
+          seq: long
+          이름: string
+          bithdate: string
+          age: long
+          gender_map: string
+          address_space_sep: string
+          zipcode_count: string
+          폰번호_sep: string
+          job_name_part: string
+          customergrade_cond: string
+          relational_duration_cond: long
+          recept_balance_hash: long
+          permit_new_credit_balance_updown: long
+          housing_new_balance_updown: long
+          exchange_per_year_del: long
+          remittance_per_quantlie_del: long
+          smart_bank_yn_count: string
+          my_money_yn: string
+          income_avg: long
+          internet_bank_cnt: long
+          internet_bank_balance: long
+          apt_yn: string
+          commerce_class: string
+          etc: double
+        type: csv
+        sep: ','
+        path: C:\Users\user\financedata_trans.csv
+        encoding: UTF-8
+        header: 있음
+    function: read_csv
+  process: []
+  end:
+    function: write_parquet
+    parameters:
+      datasource:
+        type: parquet
+        path: C:\Users\user\Documents\MyProject\app\MyProjects\data\02. 흐름\dd\dd.parquet
+rootdir: C:\Users\user\Documents\MyProject\app\MyProjects\data\02. 흐름\dd

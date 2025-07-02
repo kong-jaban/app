@@ -1,0 +1,32 @@
+openapi: 3.1.0
+info:
+  title: Categorize By Unit Schema
+  version: 1.0.0
+  description: 단위를 기준으로 카테고리화하는 스키마
+
+components:
+  schemas:
+    categorize_by_unit:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: categorize_by_unit }
+        parameters:
+          type: object
+          required:
+            - columns
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            unit:
+              type: integer
+              enum: [5, 10]
+            method:
+              type: string
+              enum: [floor, mean, string]
+            exclude_values:
+              $ref: '../definitions.yml#/components/schemas/exclude_values'
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'

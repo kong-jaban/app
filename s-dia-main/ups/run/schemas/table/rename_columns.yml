@@ -1,0 +1,35 @@
+openapi: 3.1.0
+info:
+  title: Rename Columns Schema
+  version: 1.0.0
+  description: 컬럼 이름을 변경하는 스키마
+
+components:
+  schemas:
+    rename_columns:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: rename_columns }
+        parameters:
+          type: object
+          oneOf:
+            - required: [columns]
+            - required: [pattern]
+          properties:
+            columns:
+              type: object
+              propertyNames: { $ref: '../definitions.yml#/components/schemas/column_name' }
+              additionalProperties: { $ref: '../definitions.yml#/components/schemas/column_name' }
+            pattern:
+              type: object
+              required:
+                - find
+                - replace
+              properties:
+                find:
+                  type: string
+                replace:
+                  type: string

@@ -1,0 +1,39 @@
+openapi: 3.1.0
+info:
+  title: Fill By Mapping Schema
+  version: 1.0.0
+  description: 매핑을 사용하여 값을 채우는 스키마
+
+components:
+  schemas:
+    fill_by_mapping:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: fill_by_mapping }
+        parameters:
+          type: object
+          required:
+            - key_columns
+            - map_key_columns
+            - map_value_columns
+            - map_ds
+          properties:
+            key_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            map_key_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            map_value_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name'
+            map_ds:
+              oneOf:
+                - $ref: '../definitions.yml#/components/schemas/datasource_read_csv'
+                - $ref: '../definitions.yml#/components/schemas/datasource_read_parquet'
+            not_mapped_value:
+              oneOf:
+                - type: 'null'
+                - $ref: '../definitions.yml#/components/schemas/column_name'
+            output_column:
+              $ref: '../definitions.yml#/components/schemas/column_name'

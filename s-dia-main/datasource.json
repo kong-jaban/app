@@ -1,0 +1,262 @@
+{
+  "uuid": "ada02b86-148d-445b-adb7-d4c0c89ba7a5",
+  "name": "1",
+  "type": "file",
+  "data_type": "csv",
+  "data_path": "C:\\Users\\kkchw\\OneDrive\\바탕 화면\\1-utf-8.csv",
+  "charset": "UTF-8",
+  "separator": ",",
+  "has_header": "있음",
+  "schemas": [
+    {
+      "name": "seq",
+      "comment": "",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "name",
+      "comment": "",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "bithdate",
+      "comment": "",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "bithdate.1",
+      "comment": "",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "age",
+      "comment": "",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "gender",
+      "comment": "",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "address",
+      "comment": "",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "zipcode",
+      "comment": "",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "phonenum",
+      "comment": "",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "job_name",
+      "comment": "",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "customergrade",
+      "comment": "",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "relational_duration",
+      "comment": "",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "recept_balance",
+      "comment": "",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "permit_new_credit_balance",
+      "comment": "",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "housing_new_balance",
+      "comment": "",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "exchange_per_year",
+      "comment": "",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "remittance_per_quantlie",
+      "comment": "",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "smart_bank_yn",
+      "comment": "",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "my_money_yn",
+      "comment": "",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "income_avg",
+      "comment": "",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "internet_bank_cnt",
+      "comment": "",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "internet_bank_balance",
+      "comment": "",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "apt_yn",
+      "comment": "",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "commerce_class",
+      "comment": "",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "etc",
+      "comment": "",
+      "data_type": "DOUBLE",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    }
+  ]
+}

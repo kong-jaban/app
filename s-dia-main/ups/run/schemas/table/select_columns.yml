@@ -1,0 +1,28 @@
+openapi: 3.1.0
+info:
+  title: Select Columns Schema
+  version: 1.0.0
+  description: 컬럼을 선택하는 스키마
+
+components:
+  schemas:
+    select_columns:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: select_columns }
+        parameters:
+          type: object
+          oneOf:
+            - required: [columns]
+            - required: [pattern]
+            - required: [exclude]
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            pattern:
+              type: string
+            exclude:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'

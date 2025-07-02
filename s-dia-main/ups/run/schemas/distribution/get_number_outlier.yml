@@ -1,0 +1,36 @@
+openapi: 3.1.0
+info:
+  title: Get Number Outlier Schema
+  version: 1.0.0
+  description: 컬럼의 이상치 통계를 계산하는 스키마
+
+components:
+  schemas:
+    get_number_outlier:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: get_number_outlier }
+        parameters:
+          type: object
+          required:
+            - path
+            - columns
+          properties:
+            path:
+              type: string
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            include_1_99_percentile:
+              type: boolean
+              default: false
+            include_15iqr:
+              type: boolean
+              default: false
+            include_3sigma:
+              type: boolean
+              default: false
+            exclude_values:
+              $ref: '../definitions.yml#/components/schemas/exclude_values'

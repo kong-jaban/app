@@ -1,0 +1,32 @@
+openapi: 3.1.0
+info:
+  title: Drop Duplicates Schema
+  version: 1.0.0
+  description: 중복 행 삭제 스키마 정의
+
+components:
+  schemas:
+    drop_duplicates:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function:
+          const: drop_duplicates
+          description: 함수 이름
+        parameters:
+          type: object
+          required:
+            - columns
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+              description: 중복 체크할 컬럼 이름 또는 컬럼 이름 배열
+            keep:
+              type: string
+              enum: [first, last, nothing]
+              description: '중복 행 처리 방법 (first: 첫 번째 행 유지, last: 마지막 행 유지, nothing: 모든 중복 행 삭제)'
+            sort_order:
+              $ref: '../definitions.yml#/components/schemas/sort_order'
+              description: 정렬 순서

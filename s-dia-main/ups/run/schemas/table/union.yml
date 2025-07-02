@@ -1,0 +1,28 @@
+openapi: 3.1.0
+info:
+  title: Union Schema
+  version: 1.0.0
+  description: 두 데이터셋을 합치는 스키마
+
+components:
+  schemas:
+    union:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: union }
+        parameters:
+          type: object
+          required:
+            - right_ds
+          properties:
+            right_ds:
+              oneOf:
+                - $ref: '../definitions.yml#/components/schemas/datasource_read_csv'
+                - $ref: '../definitions.yml#/components/schemas/datasource_read_parquet'
+            ignore_index:
+              type: boolean
+            sort:
+              type: boolean

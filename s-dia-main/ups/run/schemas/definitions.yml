@@ -1,0 +1,258 @@
+openapi: 3.1.0
+info:
+  title: Common Definitions
+  version: 1.0.0
+  description: 공통으로 사용되는 스키마 정의
+
+components:
+  schemas:
+    column_name:
+      type: string
+      pattern: '^[a-zA-Z_][a-zA-Z0-9_]*$'
+      description: 컬럼 이름은 영문자, 숫자, 언더스코어로 구성되며 영문자나 언더스코어로 시작해야 합니다.
+
+    column_name_or_list:
+      oneOf:
+        - $ref: '#/components/schemas/column_name'
+        - type: array
+          items: { $ref: '#/components/schemas/column_name' }
+
+    exclude_values:
+      type: array
+      items: { type: number }
+
+    data_schema:
+      type: object
+      propertyNames:
+        $ref: '#/components/schemas/column_name'
+      additionalProperties:
+        type: string
+        enum: [int, float, string, date, datetime]
+      description: 데이터 스키마는 컬럼 이름을 키로 하고 데이터 타입을 값으로 가집니다.
+
+    sort_order:
+      type: object
+      propertyNames:
+        $ref: '#/components/schemas/column_name'
+      additionalProperties:
+        type: string
+        enum: [asc, desc]
+      description: 정렬 순서는 컬럼 이름을 키로 하고 정렬 방향을 값으로 가집니다.
+
+    datasource_read_parquet:
+      type: object
+      required:
+        - datasource
+      properties:
+        datasource:
+          type: object
+          required:
+            - path
+          properties:
+            type:
+              const: parquet
+            path:
+              type: string
+          additionalProperties: true
+      description: Parquet 파일 읽기 데이터소스 정의
+
+    datasource_write_parquet:
+      type: object
+      required:
+        - datasource
+      properties:
+        datasource:
+          type: object
+          required:
+            - path
+          properties:
+            type:
+              const: parquet
+            path:
+              type: string
+            write_index:
+              type: boolean
+            columns:
+              type: array
+              items:
+                $ref: '#/components/schemas/column_name'
+          additionalProperties: true
+      description: Parquet 파일 쓰기 데이터소스 정의
+
+    datasource_read_csv:
+      type: object
+      required:
+        - datasource
+      properties:
+        datasource:
+          type: object
+          required:
+            - path
+          properties:
+            type:
+              const: csv
+            path:
+              type: string
+            sep:
+              type: string
+            encoding:
+              type: string
+            header:
+              type: boolean
+            schema:
+              $ref: '#/components/schemas/data_schema'
+          additionalProperties: true
+      description: CSV 파일 읽기 데이터소스 정의
+
+    datasource_write_csv:
+      type: object
+      required:
+        - datasource
+      properties:
+        datasource:
+          type: object
+          required:
+            - path
+          properties:
+            type:
+              const: csv
+            path:
+              type: string
+            sep:
+              type: string
+            encoding:
+              type: string
+            header:
+              type: boolean
+            index:
+              type: boolean
+            columns:
+              type: array
+              items:
+                $ref: '#/components/schemas/column_name'
+          additionalProperties: true
+      description: CSV 파일 쓰기 데이터소스 정의
+
+    value_value:
+      oneOf:
+        - type: string
+        - type: number
+        - type: boolean
+        - type: object
+        - type: array
+      description: 값
+
+    value_object:
+      type: object
+      required:
+        - type
+        - value
+      properties:
+        type:
+          const: value
+        value:
+          $ref: '#/components/schemas/value_value'
+      description: 객체 타입 값
+
+    value_column:
+      type: object
+      required:
+        - type
+        - name
+      properties:
+        type:
+          const: column
+        name:
+          $ref: '#/components/schemas/column_name'
+      description: 컬럼 참조 값
+
+    value_function:
+      type: object
+      required:
+        - type
+        - name
+      properties:
+        type:
+          const: function
+        name:
+          type: string
+        args:
+          type: array
+        kwargs:
+          type: object
+      description: 값 대신 사용할 함수. list/dict 안의 것을 포함하여 모든 $${x}는 df[x]로 변경
+
+    value:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/value_value'
+        - $ref: '#/components/schemas/value_object'
+        - $ref: '#/components/schemas/value_column'
+        - $ref: '#/components/schemas/value_function'
+      description: 값
+
+    expression:
+      type: object
+      required:
+        - expression
+      properties:
+        expression:
+          type: object
+          required: [left, op, right]
+          properties:
+            left:
+              $ref: '#/components/schemas/value'
+            op:
+              type: string
+              enum:
+                - '=='
+                - '!='
+                - '>'
+                - '>='
+                - '<'
+                - '<='
+                - 'isnull'
+                - 'in'
+                - 'startswith'
+                - 'endswith'
+                - 'contains'
+                - 'match'
+                - 'not isnull'
+                - 'not in'
+                - 'not startswith'
+                - 'not endswith'
+                - 'not contains'
+                - 'not match'
+            right:
+              $ref: '#/components/schemas/value'
+      description: 수식
+
+    op_and:
+      type: object
+      required:
+        - and
+      properties:
+        and:
+          type: array
+          items:
+            $ref: '#/components/schemas/condition'
+      description: AND 연산
+
+    op_or:
+      type: object
+      required:
+        - or
+      properties:
+        or:
+          type: array
+          items:
+            $ref: '#/components/schemas/condition'
+      description: OR 연산
+
+    condition:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/expression'
+        - $ref: '#/components/schemas/op_and'
+        - $ref: '#/components/schemas/op_or'
+      description: 조건

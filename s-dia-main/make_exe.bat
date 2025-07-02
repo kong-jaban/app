@@ -1,0 +1,1 @@
+pyinstaller S-DIA.spec

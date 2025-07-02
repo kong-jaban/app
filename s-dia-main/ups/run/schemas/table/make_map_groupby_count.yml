@@ -1,0 +1,28 @@
+openapi: 3.1.0
+info:
+  title: Make Map Groupby Count Schema
+  version: 1.0.0
+  description: 그룹별 카운트를 계산하는 스키마
+
+components:
+  schemas:
+    make_map_groupby_count:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: make_map_groupby_count }
+        parameters:
+          type: object
+          required:
+            - group_columns
+          properties:
+            group_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            count_column:
+              $ref: '../definitions.yml#/components/schemas/column_name'
+            sort_by_count:
+              type: boolean
+            ascending:
+              type: boolean

@@ -1,0 +1,43 @@
+openapi: 3.1.0
+info:
+  title: Top Bottom Coding Schema
+  version: 1.0.0
+  description: 상위/하위 값으로 상하단코딩
+
+components:
+  schemas:
+    top_bottom_coding:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: top_bottom_coding }
+        parameters:
+          type: object
+          required: [columns]
+          oneOf:
+            - required: [top]
+            - required: [bottom]
+          properties:
+            data_type:
+              type: string
+              enum: [int, float, string]
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            top:
+              type: number
+            top_replace:
+              oneOf:
+                - type: number
+                - type: string
+            bottom:
+              type: number
+            bottom_replace:
+              oneOf:
+                - type: number
+                - type: string
+            exclude_values:
+              $ref: '../definitions.yml#/components/schemas/exclude_values'
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'

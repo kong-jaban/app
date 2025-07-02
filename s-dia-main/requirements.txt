@@ -1,0 +1,10 @@
+PySide6>=6.9.0
+pyinstaller>=6.3.0
+pywin32>=306
+psutil>=5.9.0
+cryptography>=43.0.1
+pycryptodome>=3.18.0
+aria2p>=0.12.1
+chardet==5.2.0
+openpyxl==3.1.5
+msoffcrypto-tool==5.4.2

@@ -1,0 +1,50 @@
+openapi: 3.1.0
+info:
+  title: Date Add Schema
+  version: 1.0.0
+  description: 날짜에 기간을 더하는 스키마
+
+components:
+  schemas:
+    date_add:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: date_add }
+        parameters:
+          type: object
+          required:
+            - columns
+          oneOf:
+            - required: [years]
+            - required: [months]
+            - required: [days]
+            - required: [hours]
+            - required: [minutes]
+            - required: [seconds]
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            years:
+              $ref: '#/components/schemas/date_add_value'
+            months:
+              $ref: '#/components/schemas/date_add_value'
+            days:
+              $ref: '#/components/schemas/date_add_value'
+            hours:
+              $ref: '#/components/schemas/date_add_value'
+            minutes:
+              $ref: '#/components/schemas/date_add_value'
+            seconds:
+              $ref: '#/components/schemas/date_add_value'
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            errors:
+              type: string
+              enum: [raise, coerce]
+    date_add_value:
+      oneOf:
+        - type: integer
+        - $ref: '../definitions.yml#/components/schemas/column_name'

@@ -1,0 +1,33 @@
+openapi: 3.1.0
+info:
+  title: Replace String Schema
+  version: 1.0.0
+  description: 문자열 치환
+
+components:
+  schemas:
+    replace_string:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: replace_string }
+        parameters:
+          type: object
+          required:
+            - columns
+            - replacements
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            replacements:
+              type: object
+              patternProperties:
+                '^.*$': { type: string }
+            use_regex:
+              type: boolean
+            ignore_case:
+              type: boolean
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'

@@ -1,0 +1,36 @@
+openapi: 3.1.0
+info:
+  title: BLAKE2b Schema
+  version: 1.0.0
+  description: BLAKE2b 해시 함수를 사용한 암호화 스키마
+
+components:
+  schemas:
+    blake2b:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: blake2b }
+        parameters:
+          type: object
+          required:
+            - columns
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            length:
+              type: integer
+              minimum: 1
+              maximum: 64
+            salt:
+              type: string
+            salt_position:
+              type: string
+              enum: [prefix, suffix]
+            encoding:
+              type: string
+              enum: [hex_lower, hex_upper, base64]
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'

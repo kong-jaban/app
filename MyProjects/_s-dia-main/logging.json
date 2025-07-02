@@ -1,0 +1,40 @@
+{
+    "version": 1,
+    "disable_existing_loggers": false,
+    "log_path": {
+        "windows": "%LOCALAPPDATA%/UPSDATA/S-DIA/logs",
+        "linux": "~/.upsdata/s-dia/logs",
+        "darwin": "~/Library/Application Support/UPSDATA/S-DIA/logs"
+    },
+    "formatters": {
+        "standard": {
+            "format": "[%(asctime)s] %(levelname)s [%(filename)s:%(lineno)d] - %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S"
+        }
+    },
+    "handlers": {
+        "file": {
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "level": "DEBUG",
+            "formatter": "standard",
+            "filename": "",
+            "when": "midnight",
+            "interval": 1,
+            "backupCount": 30,
+            "encoding": "utf-8"
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "standard",
+            "stream": "ext://sys.stdout"
+        }
+    },
+    "loggers": {
+        "S-DIA": {
+            "level": "DEBUG",
+            "handlers": ["file", "console"],
+            "propagate": false
+        }
+    }
+} 

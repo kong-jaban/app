@@ -1,0 +1,32 @@
+openapi: 3.1.0
+info:
+  title: Top Bottom 15IQR Schema
+  version: 1.0.0
+  description: 1.5IQR 기준 상위/하위 값으로 상하단코딩
+
+components:
+  schemas:
+    top_bottom_15iqr:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: top_bottom_15iqr }
+        parameters:
+          type: object
+          required:
+            - columns
+            - top
+            - bottom
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            top:
+              type: boolean
+            bottom:
+              type: boolean
+            exclude_values:
+              $ref: '../definitions.yml#/components/schemas/exclude_values'
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'

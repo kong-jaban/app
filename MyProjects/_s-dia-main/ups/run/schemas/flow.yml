@@ -1,0 +1,158 @@
+openapi: 3.1.0
+info:
+  title: Flow Schema
+  version: 1.0.0
+  description: 흐름 처리 스키마
+
+servers:
+  - url: http://localhost:8000
+    description: 로컬 개발 서버
+
+paths:
+  /flow:
+    post:
+      summary: 데이터 처리 흐름 실행
+      description: 정의된 데이터 처리 흐름을 실행합니다
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/flow'
+      responses:
+        '200':
+          description: 성공적으로 처리됨
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        '400':
+          description: 잘못된 요청
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+
+components:
+  schemas:
+    flow:
+      type: object
+      required:
+        - flow
+      properties:
+        log:
+          type: object
+          properties:
+            name:
+              type: string
+              description: 로그 이름
+            level:
+              type: string
+              enum: [debug, info, warning, error, critical]
+              description: 로그 레벨
+            file:
+              type: string
+              description: 로그 파일 경로
+
+        env:
+          type: object
+          properties:
+            parquet:
+              type: object
+              properties:
+                blocksize:
+                  type: string
+                  pattern: '^[1-9][0-9]*MB$'
+                  description: Parquet 파일 블록 크기
+            csv:
+              type: object
+              properties:
+                blocksize:
+                  type: string
+                  pattern: '^[1-9][0-9]*MB$'
+                  description: CSV 파일 블록 크기
+                sample:
+                  type: integer
+                  minimum: 100
+                  description: 데이터타입 추정을 위해 사용할 데이터 개수
+
+        flow:
+          type: object
+          required:
+            - start
+            - process
+            - end
+          additionalProperties: false
+          properties:
+            start:
+              oneOf:
+                - $ref: './table/read_csv.yml#/components/schemas/read_csv'
+                - $ref: './table/read_parquet.yml#/components/schemas/read_parquet'
+              description: 시작 단계
+
+            end:
+              type: object
+              oneOf:
+                - $ref: './table/write_csv.yml#/components/schemas/write_csv'
+                - $ref: './table/write_parquet.yml#/components/schemas/write_parquet'
+              description: 종료 단계
+
+            process:
+              oneOf:
+                - type: 'null'
+                - type: array
+                  items:
+                    anyOf:
+                      - $ref: './table/write_csv.yml#/components/schemas/write_csv'
+                      - $ref: './table/write_parquet.yml#/components/schemas/write_parquet'
+                      - $ref: './table/cast_data_type.yml#/components/schemas/cast_data_type'
+                      - $ref: './table/orderby.yml#/components/schemas/orderby'
+                      - $ref: './table/drop_columns.yml#/components/schemas/drop_columns'
+                      - $ref: './table/select_columns.yml#/components/schemas/select_columns'
+                      - $ref: './table/rename_columns.yml#/components/schemas/rename_columns'
+                      - $ref: './table/drop_duplicates.yml#/components/schemas/drop_duplicates'
+                      - $ref: './table/filter.yml#/components/schemas/filter'
+                      - $ref: './table/union.yml#/components/schemas/union'
+                      - $ref: './table/join.yml#/components/schemas/join'
+                      - $ref: './table/make_map_groupby_count.yml#/components/schemas/make_map_groupby_count'
+                      - $ref: './distribution/get_distribution.yml#/components/schemas/get_distribution'
+                      - $ref: './distribution/get_number_outlier.yml#/components/schemas/get_number_outlier'
+                      - $ref: './column_mix/apply_conditions.yml#/components/schemas/apply_conditions'
+                      - $ref: './column_mix/fill_by_mapping.yml#/components/schemas/fill_by_mapping'
+                      - $ref: './column_date/date_add.yml#/components/schemas/date_add'
+                      - $ref: './column_date/date_diff.yml#/components/schemas/date_diff'
+                      - $ref: './column_string/combine_columns.yml#/components/schemas/combine_columns'
+                      - $ref: './column_string/replace_string.yml#/components/schemas/replace_string'
+                      - $ref: './column_string/substring.yml#/components/schemas/substring'
+                      - $ref: './column_string/to_lower.yml#/components/schemas/to_lower'
+                      - $ref: './column_string/to_upper.yml#/components/schemas/to_upper'
+                      - $ref: './column_numeric/categorize_by_equal_width.yml#/components/schemas/categorize_by_equal_width'
+                      - $ref: './column_numeric/categorize_by_interval.yml#/components/schemas/categorize_by_interval'
+                      - $ref: './column_numeric/categorize_by_unit.yml#/components/schemas/categorize_by_unit'
+                      - $ref: './column_numeric/fill_random_float.yml#/components/schemas/fill_random_float'
+                      - $ref: './column_numeric/fill_random_int.yml#/components/schemas/fill_random_int'
+                      - $ref: './column_numeric/fill_random_normal.yml#/components/schemas/fill_random_normal'
+                      - $ref: './column_numeric/fill_random_sequence.yml#/components/schemas/fill_random_sequence'
+                      - $ref: './column_numeric/round_down.yml#/components/schemas/round_down'
+                      - $ref: './column_numeric/round_up.yml#/components/schemas/round_up'
+                      - $ref: './column_numeric/round.yml#/components/schemas/round'
+                      - $ref: './column_numeric/top_bottom_3sigma.yml#/components/schemas/top_bottom_3sigma'
+                      - $ref: './column_numeric/top_bottom_15iqr.yml#/components/schemas/top_bottom_15iqr'
+                      - $ref: './column_numeric/top_bottom_coding.yml#/components/schemas/top_bottom_coding'
+                      - $ref: './column_numeric/top_bottom_percentile.yml#/components/schemas/top_bottom_percentile'
+                      - $ref: './column_numeric/truncate_to_left.yml#/components/schemas/truncate_to_left'
+                      - $ref: './column_encrypt/blake2s.yml#/components/schemas/blake2s'
+                      - $ref: './column_encrypt/blake2b.yml#/components/schemas/blake2b'
+                      - $ref: './column_encrypt/sha2.yml#/components/schemas/sha2'
+                      - $ref: './column_encrypt/sha3.yml#/components/schemas/sha3'
+                      - $ref: './column_encrypt/shake_128.yml#/components/schemas/shake_128'
+                      - $ref: './column_encrypt/shake_256.yml#/components/schemas/shake_256'
+              description: 처리 단계 목록

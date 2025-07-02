@@ -1,0 +1,33 @@
+openapi: 3.1.0
+info:
+  title: Truncate To Left Schema
+  version: 1.0.0
+  description: 왼쪽 자릿수 기준으로 절사
+
+components:
+  schemas:
+    truncate_to_left:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: truncate_to_left }
+        parameters:
+          type: object
+          required:
+            - columns
+            - digits
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            digits:
+              type: integer
+              minimum: 1
+            data_type:
+              type: string
+              enum: [int, float]
+            exclude_values:
+              $ref: '../definitions.yml#/components/schemas/exclude_values'
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'

@@ -1,0 +1,37 @@
+openapi: 3.1.0
+info:
+  title: Join Schema
+  version: 1.0.0
+  description: 두 데이터셋을 조인하는 스키마
+
+components:
+  schemas:
+    join:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: join }
+        parameters:
+          type: object
+          required:
+            - right_ds
+            - left_on
+          properties:
+            right_ds:
+              oneOf:
+                - $ref: '../definitions.yml#/components/schemas/datasource_read_csv'
+                - $ref: '../definitions.yml#/components/schemas/datasource_read_parquet'
+            left_on:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            right_on:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            how:
+              type: string
+              enum: [left, right, inner, outer]
+            suffixes:
+              type: array
+              items: { type: string }
+              minItems: 2
+              maxItems: 2

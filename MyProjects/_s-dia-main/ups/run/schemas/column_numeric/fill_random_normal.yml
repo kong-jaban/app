@@ -1,0 +1,28 @@
+openapi: 3.1.0
+info:
+  title: Fill Random Normal Schema
+  version: 1.0.0
+  description: 정규분포를 따르는 랜덤값을 채우는 스키마
+
+components:
+  schemas:
+    fill_random_normal:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: fill_random_normal }
+        parameters:
+          type: object
+          required:
+            - output_columns
+          properties:
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            mean:
+              type: number
+            std:
+              type: number
+            seed:
+              type: integer

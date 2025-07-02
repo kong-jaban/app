@@ -1,0 +1,28 @@
+openapi: 3.1.0
+info:
+  title: Round Down Function Schema
+  version: 1.0.0
+  description: 숫자 내림 처리 함수
+
+components:
+  schemas:
+    round_down:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: round_down }
+        parameters:
+          type: object
+          required:
+            - columns
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            decimals:
+              type: integer
+            exclude_values:
+              $ref: '../definitions.yml#/components/schemas/exclude_values'
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'

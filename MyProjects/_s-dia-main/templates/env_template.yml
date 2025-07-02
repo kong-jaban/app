@@ -1,0 +1,13 @@
+rootdir: 
+
+log:
+  name: s-dia
+  level: debug
+  file: ./s-dia.log
+
+env:
+  parquet:
+    blocksize: 256MB
+  csv:
+    blocksize: 64MB
+    sample: 10000

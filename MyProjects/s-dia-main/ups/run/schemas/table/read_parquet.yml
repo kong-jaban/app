@@ -1,0 +1,17 @@
+openapi: 3.1.0
+info:
+  title: Read Parquet Schema
+  version: 1.0.0
+  description: Parquet 파일을 읽는 스키마
+
+components:
+  schemas:
+    read_parquet:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: read_parquet }
+        parameters:
+          $ref: '../definitions.yml#/components/schemas/datasource_read_parquet'

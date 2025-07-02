@@ -1,0 +1,40 @@
+openapi: 3.1.0
+info:
+  title: Categorize By Interval Schema
+  version: 1.0.0
+  description: 구간을 지정하여 카테고리화하는 스키마
+
+components:
+  schemas:
+    categorize_by_interval:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: categorize_by_interval }
+        parameters:
+          type: object
+          required:
+            - columns
+            - bins
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            bins:
+              type: array
+              items: { type: number }
+              minItems: 2
+            labels:
+              type: array
+              items: { type: string }
+            right:
+              type: boolean
+            include_lowest:
+              type: boolean
+            extend_bins:
+              type: boolean
+            exclude_values:
+              $ref: '../definitions.yml#/components/schemas/exclude_values'
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'

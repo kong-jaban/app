@@ -1,0 +1,272 @@
+{
+  "uuid": "c0741038-8737-45b6-9410-79c63b8c4673",
+  "name": "22",
+  "type": "file",
+  "data_type": "csv",
+  "data_path": "C:\\Users\\kkchw\\OneDrive\\바탕 화면\\2.csv",
+  "charset": "EUC-KR",
+  "separator": ",",
+  "has_header": "있음",
+  "schemas": [
+    {
+      "name": "seq",
+      "comment": "seq",
+      "data_type": "LONG",
+      "de_identi_attr": "ID",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "name",
+      "comment": "name",
+      "data_type": "STRING",
+      "de_identi_attr": "QI",
+      "is_distribution": false,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "bithdate",
+      "comment": "bithdate",
+      "data_type": "STRING",
+      "de_identi_attr": "NSA",
+      "is_distribution": false,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "bithdate.1",
+      "comment": "bithdate.1",
+      "data_type": "STRING",
+      "de_identi_attr": "SA",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "age",
+      "comment": "age",
+      "data_type": "LONG",
+      "de_identi_attr": "ID",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "gender",
+      "comment": "gender",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "address",
+      "comment": "address",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "zipcode",
+      "comment": "zipcode",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "phonenum",
+      "comment": "phonenum",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "job_name",
+      "comment": "job_name",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "customergrade",
+      "comment": "customergrade",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "relational_duration",
+      "comment": "relational_duration",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": true,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "recept_balance",
+      "comment": "recept_balance",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": true,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "permit_new_credit_balance",
+      "comment": "permit_new_credit_balance",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": true,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "housing_new_balance",
+      "comment": "housing_new_balance",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": true,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "exchange_per_year",
+      "comment": "exchange_per_year",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": true,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "remittance_per_quantlie",
+      "comment": "remittance_per_quantlie",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": true,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "smart_bank_yn",
+      "comment": "smart_bank_yn",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "my_money_yn",
+      "comment": "my_money_yn",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "income_avg",
+      "comment": "income_avg",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": true,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "internet_bank_cnt",
+      "comment": "internet_bank_cnt",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": true,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "internet_bank_balance",
+      "comment": "internet_bank_balance",
+      "data_type": "LONG",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": true,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "apt_yn",
+      "comment": "apt_yn",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "commerce_class",
+      "comment": "commerce_class",
+      "data_type": "STRING",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "etc",
+      "comment": "etc",
+      "data_type": "DOUBLE",
+      "de_identi_attr": "NONE",
+      "is_distribution": false,
+      "is_statistics": true,
+      "exception_text": "",
+      "json": ""
+    },
+    {
+      "name": "aaa",
+      "comment": "1sss",
+      "data_type": "DOUBLE",
+      "de_identi_attr": "NONE",
+      "is_distribution": true,
+      "is_statistics": false,
+      "exception_text": "",
+      "json": ""
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+openapi: 3.1.0
+info:
+  title: Substring Schema
+  version: 1.0.0
+  description: 문자열 자르기
+
+components:
+  schemas:
+    substring:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: substring }
+        parameters:
+          type: object
+          required: [columns]
+          oneOf:
+            - required: [start]
+            - required: [end]
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            start:
+              type: integer
+            end:
+              type: integer
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'

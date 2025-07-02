@@ -1,0 +1,30 @@
+openapi: 3.1.0
+info:
+  title: Combine Columns Schema
+  version: 1.0.0
+  description: 여러 컬럼을 하나의 컬럼으로 결합
+
+components:
+  schemas:
+    combine_columns:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: combine_columns }
+        parameters:
+          type: object
+          required:
+            - output_column
+            - columns
+          properties:
+            output_column:
+              $ref: '../definitions.yml#/components/schemas/column_name'
+            columns:
+              type: array
+              items: { $ref: '../definitions.yml#/components/schemas/column_name' }
+            sep:
+              type: string
+            drop_originals:
+              type: boolean

@@ -1,0 +1,22 @@
+openapi: 3.1.0
+info:
+  title: Filter Schema
+  version: 1.0.0
+  description: 필터링 조건을 정의하는 스키마
+
+components:
+  schemas:
+    filter:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: filter }
+        parameters:
+          type: object
+          required:
+            - conditions
+          properties:
+            conditions:
+              $ref: '../definitions.yml#/components/schemas/condition'

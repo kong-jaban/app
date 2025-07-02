@@ -1,0 +1,41 @@
+openapi: 3.1.0
+info:
+  title: Date Diff Schema
+  version: 1.0.0
+  description: 두 날짜의 차이를 계산하는 스키마
+
+components:
+  schemas:
+    date_diff:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: date_diff }
+        parameters:
+          type: object
+          required:
+            - output_column
+            - left
+            - right
+          properties:
+            output_column:
+              $ref: '../definitions.yml#/components/schemas/column_name'
+            left:
+              oneOf:
+                - $ref: '../definitions.yml#/components/schemas/column_name'
+                - $ref: '#/components/schemas/datetime_string'
+            right:
+              oneOf:
+                - $ref: '../definitions.yml#/components/schemas/column_name'
+                - $ref: '#/components/schemas/datetime_string'
+            unit:
+              type: string
+              enum: [years, months, days, hours, minutes, seconds]
+            errors:
+              type: string
+              enum: [raise, coerce]
+    datetime_string:
+      type: string
+      pattern: ^datetime\(\d+,\d+,\d+(,\d+,\d+(,\d+)?)?\)$

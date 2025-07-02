@@ -1,0 +1,24 @@
+openapi: 3.1.0
+info:
+  title: Fill Random Sequence Schema
+  version: 1.0.0
+  description: 랜덤 시퀀스 값을 채우는 스키마
+
+components:
+  schemas:
+    fill_random_sequence:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: fill_random_sequence }
+        parameters:
+          type: object
+          required:
+            - output_columns
+          properties:
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            start:
+              type: integer

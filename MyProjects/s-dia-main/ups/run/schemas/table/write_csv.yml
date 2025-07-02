@@ -1,0 +1,17 @@
+openapi: 3.1.0
+info:
+  title: Write CSV Schema
+  version: 1.0.0
+  description: CSV 파일로 저장하는 스키마
+
+components:
+  schemas:
+    write_csv:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: write_csv }
+        parameters:
+          $ref: '../definitions.yml#/components/schemas/datasource_write_csv'

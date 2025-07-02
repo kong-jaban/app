@@ -1,0 +1,23 @@
+openapi: 3.1.0
+info:
+  title: To Lower Schema
+  version: 1.0.0
+  description: 문자열을 소문자로 변환
+
+components:
+  schemas:
+    to_lower:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: to_lower }
+        parameters:
+          type: object
+          required: [columns]
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'

@@ -1,0 +1,36 @@
+openapi: 3.1.0
+info:
+  title: Top Bottom Percentile Schema
+  version: 1.0.0
+  description: 백분위 기준 상위/하위 값으로 상하단코딩
+
+components:
+  schemas:
+    top_bottom_percentile:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: top_bottom_percentile }
+        parameters:
+          type: object
+          required: [columns]
+          oneOf:
+            - required: [top]
+            - required: [bottom]
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            top:
+              type: integer
+              minimum: 0
+              maximum: 50
+            bottom:
+              type: integer
+              minimum: 50
+              maximum: 100
+            exclude_values:
+              $ref: '../definitions.yml#/components/schemas/exclude_values'
+            output_columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'

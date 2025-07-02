@@ -1,0 +1,25 @@
+파일 경로 설정 부분
+
+def resource_path(relative_path):
+    base_path = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))    
+    return os.path.join(base_path, relative_path)
+
+먼저 이 부분의 역할에 대해 설명하자면, 
+후에 pyinstaller를 통해 하나의 exe 파일로 컴파일링 할 때, 
+리소스들의 위치가 실행파일 위치 기준이 아니라 AppData/local내부 일 경우, 
+sys._MEIPASS를 통해 리소스를 불러오도록 하기 위함
+
+getattr 메서드는 이름에 해당하는 객체 속성의 값을 가져오는 Build-in 함수입니다.
+getattr(sys,"_MEIPASS",default) 의 경우는 sys모듈의 _MEIPASS 멤버함수가 있을경우
+ sys._MEIPASS 값을 가져오고 아니면 default를 가져오는 코드 입니다.
+여기서 default에 사용된 메서드에서 __file__은 해당 코드를 가지는 파이썬 파일의 경로이며,
+ 실행한 위치에서의 상대경로를 포함합니다.
+os.path.abspath( )는 절대경로를 구하는 메서드이며 os.path.abspath(__file__)은
+ 현재 파일의 절대경로를 구합니다.
+os.path.dirname( )메서드는 현재 파일이 포함된 폴더의 경로를 구하는 메서드 입니다.
+os.path.join( ) 메서드는 두 경로를 합치는 메서드
+
+종합: base_path 변수는 리소스의 위치가 다른 경로일 경우 sys._MEIPASS를 가져오고,
+ 아닌경우 현재 파일 경로를 가져오게 됩니다.
+그리고 os.path.join(base_path, relative_path)를 통해
+ base_path 경로에 현재 파일명을 더한 총 경로를 출력

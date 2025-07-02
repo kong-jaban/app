@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>JoinWidget</class>
+ <widget class="QWidget" name="JoinWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1107</width>
+    <height>772</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+    background: white;
+}
+QLabel {
+    color: #000000;
+    font-size: 14px;
+    background-color: transparent;
+}
+QLineEdit {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #ffffff;
+    font-size: 14px;
+    min-height: 20px;
+    color: #000000;
+}
+QLineEdit:focus {
+    border: 1px solid #80bdff;
+    outline: 0;
+}
+QLineEdit[readOnly=&quot;true&quot;] {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+QPushButton {
+    color: #000000;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+QPushButton:hover {
+    background-color: #dee2e6;
+}
+QPushButton#save_button {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    font-weight: bold;
+}
+QPushButton#save_button:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+QPushButton#save_button:pressed {
+    background-color: #0062cc;
+    border-color: #005cbf;
+}
+QComboBox {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 5px 10px;
+    min-height: 30px;
+    color: #000000;
+}
+QComboBox:focus {
+    border: 1px solid #339af0;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 30px;
+    border: none;
+}
+QComboBox::down-arrow {
+    image: url(src/ui/resources/images/down-arrow-svgrepo-com.svg);
+    width: 10px;
+    height: 10px;
+    margin-right: 1px;
+}
+QComboBox QAbstractItemView {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    outline: none;
+    selection-background-color: #e9ecef;
+    selection-color: #000;
+}
+QComboBox QAbstractItemView::item {
+    padding: 8px 20px;
+    color: #000000;
+}
+QComboBox QAbstractItemView::item:selected {
+    background-color: #e9ecef;
+    color: #000;
+}
+QTableWidget {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    gridline-color: #e9ecef;
+    color: #000000;
+}
+QTableWidget::item {
+    padding: 4px;
+    border-bottom: 1px solid #e9ecef;
+    color: #000000;
+    background-color: white;
+}
+QTableWidget::item:selected {
+    background-color: #e7f5ff;
+    color: #000000;
+}
+QTableWidget::item:focus {
+    outline: none;
+    border: none;
+    background: #e7f5ff;
+    color: #000000;
+}
+QHeaderView::section {
+    background-color: #f8f9fa;
+    color: #000000;
+    padding: 8px;
+    border: none;
+    border-right: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: bold;
+}
+QScrollBar:vertical {
+    border: none;
+    background: #f8f9fa;
+    width: 10px;
+    margin: 0px;
+}
+QScrollBar::handle:vertical {
+    background: #dee2e6;
+    min-height: 20px;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover {
+    background: #adb5bd;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+QScrollBar:horizontal {
+    border: none;
+    background: #f8f9fa;
+    height: 10px;
+    margin: 0px;
+}
+QScrollBar::handle:horizontal {
+    background: #dee2e6;
+    min-width: 20px;
+    border-radius: 5px;
+}
+QScrollBar::handle:horizontal:hover {
+    background: #adb5bd;
+}
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    width: 0px;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>10</number>
+   </property>
+   <property name="leftMargin">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="title_label">
+     <property name="styleSheet">
+      <string notr="true">font-size: 20px;
+font-weight: bold;
+color: #000000;
+background-color: transparent;</string>
+     </property>
+     <property name="text">
+      <string>결합하기(join)</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="datasource_layout">
+     <item>
+      <widget class="QLabel" name="current_datasource_label">
+       <property name="minimumSize">
+        <size>
+         <width>170</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #000;</string>
+       </property>
+       <property name="text">
+        <string>현재 데이터 소스(left)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="current_datasource_line">
+       <property name="minimumSize">
+        <size>
+         <width>250</width>
+         <height>38</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>250</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #000;</string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="placeholderText">
+        <string>현재 데이터 소스명</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="join_datasource_layout">
+     <item>
+      <widget class="QLabel" name="join_datasource_label">
+       <property name="minimumSize">
+        <size>
+         <width>170</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #000;</string>
+       </property>
+       <property name="text">
+        <string>결합할 데이터 소스(right)</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="join_datasource_combo">
+       <property name="minimumSize">
+        <size>
+         <width>250</width>
+         <height>42</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 5px 10px;
+    min-height: 30px;
+    color: #000000;
+}
+QComboBox:focus {
+    border: 1px solid #339af0;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 30px;
+    border: none;
+}
+QComboBox::down-arrow {
+    image: url(src/ui/resources/images/down-arrow-svgrepo-com.svg);
+    width: 10px;
+    height: 10px;
+    margin-right: 1px;
+}
+QComboBox QAbstractItemView {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    outline: none;
+    selection-background-color: #e9ecef;
+    selection-color: #000;
+}
+QComboBox QAbstractItemView::item {
+    padding: 8px 20px;
+    color: #000000;
+}
+QComboBox QAbstractItemView::item:selected {
+    background-color: #e9ecef;
+    color: #000;
+}</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Policy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>60</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="join_type_label">
+       <property name="styleSheet">
+        <string notr="true">color: #000;</string>
+       </property>
+       <property name="text">
+        <string>결합 타입</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="join_type_combo">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>42</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QComboBox {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 5px 10px;
+    min-height: 30px;
+    color: #000000;
+}
+QComboBox:focus {
+    border: 1px solid #339af0;
+}
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: center right;
+    width: 30px;
+    border: none;
+}
+QComboBox::down-arrow {
+    image: url(src/ui/resources/images/down-arrow-svgrepo-com.svg);
+    width: 10px;
+    height: 10px;
+    margin-right: 1px;
+}
+QComboBox QAbstractItemView {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    outline: none;
+    selection-background-color: #e9ecef;
+    selection-color: #000;
+}
+QComboBox QAbstractItemView::item {
+    padding: 8px 20px;
+    color: #000000;
+}
+QComboBox QAbstractItemView::item:selected {
+    background-color: #e9ecef;
+    color: #000;
+}</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>left</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>right</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>inner</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>outer</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="join_columns_header_layout">
+     <item>
+      <widget class="QLabel" name="join_columns_label">
+       <property name="styleSheet">
+        <string notr="true">color: #000;</string>
+       </property>
+       <property name="text">
+        <string>결합 컬럼</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="add_column_button">
+       <property name="minimumSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>30</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: #28a745;
+    border: 1px solid #28a745;
+    border-radius: 15px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+	padding-top: 2px;
+}
+QPushButton:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}</string>
+       </property>
+       <property name="text">
+        <string>+</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="join_columns_table">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>false</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
+     </property>
+     <property name="rowCount">
+      <number>5</number>
+     </property>
+     <property name="columnCount">
+      <number>3</number>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderStretchLastSection">
+      <bool>false</bool>
+     </attribute>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <column>
+      <property name="text">
+       <string>순서</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>컬럼명(left)</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>대상 컬럼명(right)</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="save_button">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    color: #000000;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+QPushButton:hover {
+    background-color: #dee2e6;
+}
+QPushButton#save_button {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    font-weight: bold;
+}
+QPushButton#save_button:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+QPushButton#save_button:pressed {
+    background-color: #0062cc;
+    border-color: #005cbf;
+}</string>
+       </property>
+       <property name="text">
+        <string>저장</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="delete_btn">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    color: #000000;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+QPushButton:hover {
+    background-color: #dee2e6;
+}
+QPushButton#save_button {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    font-weight: bold;
+}
+QPushButton#save_button:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+QPushButton#save_button:pressed {
+    background-color: #0062cc;
+    border-color: #005cbf;
+}</string>
+       </property>
+       <property name="text">
+        <string>삭제</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

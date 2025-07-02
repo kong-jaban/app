@@ -1,0 +1,31 @@
+openapi: 3.1.0
+info:
+  title: Get Distribution Schema
+  version: 1.0.0
+  description: 컬럼의 값 분포를 계산하는 스키마
+
+components:
+  schemas:
+    get_distribution:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function: { const: get_distribution }
+        parameters:
+          type: object
+          required:
+            - out_dir
+            - columns
+          properties:
+            out_dir:
+              type: string
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+            sort_by_count:
+              type: boolean
+              default: true
+            ascending:
+              type: boolean
+              default: true

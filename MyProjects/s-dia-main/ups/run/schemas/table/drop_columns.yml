@@ -1,0 +1,29 @@
+openapi: 3.1.0
+info:
+  title: Drop Columns Schema
+  version: 1.0.0
+  description: 컬럼 삭제 스키마 정의
+
+components:
+  schemas:
+    drop_columns:
+      type: object
+      required:
+        - function
+        - parameters
+      properties:
+        function:
+          const: drop_columns
+          description: 함수 이름
+        parameters:
+          type: object
+          oneOf:
+            - required: [columns]
+            - required: [pattern]
+          properties:
+            columns:
+              $ref: '../definitions.yml#/components/schemas/column_name_or_list'
+              description: 삭제할 컬럼 이름 또는 컬럼 이름 배열
+            pattern:
+              type: string
+              description: 삭제할 컬럼 이름 패턴
